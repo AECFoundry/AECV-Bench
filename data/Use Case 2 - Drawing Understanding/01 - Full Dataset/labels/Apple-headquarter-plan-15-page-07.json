@@ -1,0 +1,137 @@
+{
+    "image_id": "Apple-headquarter-plan-15-page-07",
+    "image_path": "images/Apple-headquarter-plan-15-page-07.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed in the title block?",
+            "answer": "Main Building Basement Level 1 Stall Size Plan",
+            "evidence": [
+                "In the title block, under 'Title', the text reads: 'Main Building Basement Level 1 Stall Size Plan'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_number",
+            "question": "What sheet number is shown for this drawing?",
+            "answer": "P-8.09",
+            "evidence": [
+                "The bottom of the title block shows the sheet number as 'P-8.09'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "scale_reading",
+            "question": "What is the drawing scale indicated in the title block?",
+            "answer": "1\" = 64'",
+            "evidence": [
+                "The 'Scale @ Arch E1' field in the title block reads '1\"=64''."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "legend_location",
+            "question": "Where on the sheet is the legend describing the parking space types located?",
+            "answer": "In the upper-left portion of the drawing area.",
+            "evidence": [
+                "The colored legend with 'Basement Level 01: 1,140 Parking spaces' appears in the upper-left corner of the grey background."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "titleblock_location",
+            "question": "Where is the main title block located on the sheet?",
+            "answer": "Along the right edge near the lower-right corner.",
+            "evidence": [
+                "The vertical title block containing 'Apple Inc.', 'Apple Campus 2', and the sheet title is placed on the right-hand side, extending down to the lower-right corner."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "total_parking_spaces",
+            "question": "How many total parking spaces are provided on Basement Level 01 according to the legend?",
+            "answer": "1,140 parking spaces",
+            "evidence": [
+                "The legend heading reads: 'Basement Level 01: 1,140 Parking spaces'."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "standard_parking_count",
+            "question": "How many Standard parking spaces are indicated in the legend?",
+            "answer": "394 Standard parking spaces",
+            "evidence": [
+                "The first legend line with the cyan color reads: '394 Standard parking spaces (8'-6\" x 18'-0\")'."
+            ]
+        },
+        {
+            "id": "cnt3",
+            "task": "charging_and_accessible_counts",
+            "question": "How many Accessible parking spaces and Electrical charging stations are indicated in the legend?",
+            "answer": "21 Accessible parking spaces and 270 Electrical charging stations",
+            "evidence": [
+                "The dark blue legend entry reads: '21 Accessible parking spaces (9'-0\" x 18'-0\")'.",
+                "The green legend entry reads: 'Electrical charging stations 270 (included in Standard and Compact spaces)'."
+            ]
+        },
+        {
+            "id": "cnt4",
+            "task": "count_consultants",
+            "question": "How many consulting firms are included on this floor plan?",
+            "answer": "Four (4) consultants.",
+            "evidence": [
+                "Foster + Partners, Arup, OLIN, and KIER & WRIGHT."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "no_internal_ramp_quadrant",
+            "question": "Which quadrant has no internal ramps?",
+            "answer": "The 3rd quadrant or the bottom left quadrant.",
+            "evidence": [
+                "The 3rd quadrant has no internal ramps which is represented with an orange color."
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "more_internal_ramp_quadrant",
+            "question": "Which quadrant has more internal ramps?",
+            "answer": "The 1st quadrant or the top right quadrant.",
+            "evidence": [
+                "The 1st quadrant has two internal ramps which is represented with an orange color."
+            ]
+        }
+    ]
+}

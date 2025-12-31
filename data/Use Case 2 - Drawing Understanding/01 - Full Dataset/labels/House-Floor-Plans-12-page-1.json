@@ -1,0 +1,128 @@
+{
+    "image_id": "House-Floor-Plans-12-page-1",
+    "image_path": "images/House-Floor-Plans-12-page-1.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "sheet_number",
+            "question": "What is the sheet number shown on the bottom-right title block?",
+            "answer": "A101",
+            "evidence": [
+                "The title block shows 'A101' in the lower-right corner."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "project_name",
+            "question": "What is the project name written in the title block?",
+            "answer": "HOUSE",
+            "evidence": [
+                "The title block includes 'PROJECT: HOUSE' near the right side of the sheet."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "scale_reading",
+            "question": "What is the drawing scale indicated at the bottom-left of the sheet?",
+            "answer": "1/4\" = 1'-0\"",
+            "evidence": [
+                "Below the 1st floor and 2nd floor plans, the notation '1/4\" = 1'-0\"' is printed."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "stairs_location",
+            "question": "Where is the main stair located in relation to the 2nd floor plan layout?",
+            "answer": "The stair is located near the center-right side of the 2nd floor plan.",
+            "evidence": [
+                "The labeled stair and stair arrows appear beside Bedroom 4 and directly above the entry stair on the 1st floor."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "window_schedule_count",
+            "question": "How many window types are listed in the Window Schedule?",
+            "answer": "Nine (9)",
+            "evidence": [
+                "The table labeled 'Vented Window Schedule' lists 9 rows of window types under the column 'Type'."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "door_schedule_count",
+            "question": "How many door types are listed in the Door Schedule?",
+            "answer": "Eighteen (18)",
+            "evidence": [
+                "The table labeled 'Door Schedule' contains 18 entries under the 'Type' column."
+            ]
+        },
+        {
+            "id": "cnt3",
+            "task": "bedroom_distribution",
+            "question": "How many bedrooms are located on the 2nd floor?",
+            "answer": "Three (3) bedrooms.",
+            "evidence": [
+                "The labels 'BEDROOM 2', 'BEDROOM 3', and 'BEDROOM 4' appear on the 2nd floor plan."
+            ]
+        },
+        {
+            "id": "cnt4",
+            "task": "staircase_windows",
+            "question": "How many small windows are located for the staircase on the second floor?",
+            "answer": "Two (2) windows",
+            "evidence": [
+                "The staircase has two (2) small windows"
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "floor_area_comparison",
+            "question": "Which level has the larger square footage: the 1st floor or the 2nd floor?",
+            "answer": "The 1st floor (914 square feet).",
+            "evidence": [
+                "The 1st floor drawing contains the label '914 SQUARE FEET 1ST FLOOR'.",
+                "The 2nd floor drawing contains the label '906 SQUARE FEET 2ND FLOOR'."
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "more_bedrooms",
+            "question": "Which floor plan has more bedrooms?",
+            "answer": "The 2nd floor.",
+            "evidence": [
+                "The 2nd floor has more bedrooms."
+            ]
+        }
+    ]
+}

@@ -1,0 +1,145 @@
+{
+    "image_id": "House-Floor-Plans-12-page-3",
+    "image_path": "images/House-Floor-Plans-12-page-3.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "sheet_number",
+            "question": "What is the sheet number shown in the title block?",
+            "answer": "A201",
+            "evidence": [
+                "The sheet number 'A201' appears at the bottom-right of the title block."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed in the title block?",
+            "answer": "ELEVATIONS",
+            "evidence": [
+                "The title block lists 'ELEVATIONS' at the bottom-right."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "slope_reading",
+            "question": "What is the slope of the roof shown on the Front elevation?",
+            "answer": "6.0/12",
+            "evidence": [
+                "The Front elevation shows a roof slope of '6.0/12'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "entry_location_front",
+            "question": "Where is the main entry door located on the Front elevation?",
+            "answer": "Centered under the small gable roof.",
+            "evidence": [
+                "The Front elevation shows the door positioned directly below the small gable above the porch."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "elevation_count",
+            "question": "How many building elevations are shown on this sheet?",
+            "answer": "Four (4)",
+            "evidence": [
+                "The sheet shows FRONT, RIGHT, REAR, and LEFT elevations."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "front_windows",
+            "question": "How many windows are shown on the Front elevation?",
+            "answer": "Four (4) windows.",
+            "evidence": [
+                "The Front elevation includes two upper-level windows and two lower windows to the left and right of the entry door."
+            ]
+        },
+        {
+            "id": "cnt3",
+            "task": "rear_windows",
+            "question": "How many windows are shown on the Rear elevation?",
+            "answer": "Three (3) windows.",
+            "evidence": [
+                "The Rear elevation shows two upper window and one lower windows."
+            ]
+        },
+        {
+            "id": "cnt4",
+            "task": "right_elevation_windows",
+            "question": "How many windows appear on the Right elevation?",
+            "answer": "Three (3) windows.",
+            "evidence": [
+                "The Right elevation shows two small upper windows and one lower window."
+            ]
+        },
+        {
+            "id": "cnt5",
+            "task": "gable_roof_count",
+            "question": "How many gable roofs does the building have?",
+            "answer": "Three (3) gable roofs.",
+            "evidence": [
+                "The building has three gable roofs, one is the main roof, one is the roof of the porch, and one is the roof of the shed."
+            ]
+        },
+        {
+            "id": "cnt6",
+            "task": "left_elevation_windows",
+            "question": "How many windows appear on the left elevation?",
+            "answer": "Two (2) windows.",
+            "evidence": [
+                "The Left elevation shows two windows."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "roof_slope_consistency",
+            "question": "Does the roof slope identically in the Front and Rear elevations?",
+            "answer": "Yes.",
+            "evidence": [
+                "Both the Front and Rear elevations show a symmetrical gable roof sloping downward from the center ridge to both sides."
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "more_window",
+            "question": "Which view has more windows? the Front or Rear view?",
+            "answer": "The Front view.",
+            "evidence": [
+                "The front view has 4 windows and the rear has 3 windows."
+            ]
+        }
+    ]
+}

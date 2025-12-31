@@ -1,0 +1,100 @@
+{
+    "image_id": "0000-0002",
+    "image_path": "images/0000-0002.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_area_text",
+            "question": "What is the area of the BAINS room in square meters?",
+            "answer": "5.90 m²",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "read_room_label",
+            "question": "Which room is directly connected with SEJOUR without an internal door?",
+            "answer": "The CUISINE",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "adjacency",
+            "question": "Which room is directly connected to the GARAGE with an internal door?",
+            "answer": "The Lingerie",
+            "evidence": [
+                "There is a door between GARAGE and the LINGERIE."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_bedrooms",
+            "question": "Which bedroom [CHAMBRE] has the largest area?",
+            "answer": "Chambre 1",
+            "evidence": [
+                "Chambre 1 11.01 m²",
+                "Chambre 2 10.09 m²",
+                "Chambre 3 10.10 m²"
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "largest_room",
+            "question": "Which room has the second largest area?",
+            "answer": "Garage",
+            "evidence": [
+                "Largest room is SALON and SEJOUR 30.67 m²",
+                "Second largest room is GARAGE 18.20 m²"
+            ]
+        },
+        {
+            "id": "cmp3",
+            "task": "access_to_terrace",
+            "question": "Which bedroom is most close to the ABRI?",
+            "answer": "CHAMBRE 3",
+            "evidence": [
+                "CHAMBRE 3 is closer to the ABRI than CHAMBRE 1 and CHAMBRE 2."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_bedrooms",
+            "question": "How many bedrooms are available on the floor plan?",
+            "answer": "Three (3) bedrooms.",
+            "evidence": [
+                "Chambre 1, Chambre 2 and Chambre 3."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "access_doors",
+            "question": "How many doors give access to the LINGERIE room?",
+            "answer": "Three (3) doors.",
+            "evidence": [
+                "One from CUISINE side, one from GARAGE side, and one from the TERRASSE side."
+            ]
+        }
+    ]
+}

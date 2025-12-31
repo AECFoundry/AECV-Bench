@@ -1,0 +1,98 @@
+{
+    "image_id": "3000-0004",
+    "image_path": "images/3000-0004.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_slope",
+            "question": "What is the slope indicated for the lower shed roof?",
+            "answer": "2.0/12",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_area_text",
+            "question": "What flooring type is specified for the front bedrooms?",
+            "answer": "HARDWOOD FLOOR, TYP.",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "window_shed_roof",
+            "question": "Which room has window facing the shed roof?",
+            "answer": "REAR BEDROOM",
+            "evidence": [
+                "REAR BEDROOM has window facing the shed roof"
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "no_built_in_closet",
+            "question": "Which bedroom has no built-in closet?",
+            "answer": "REAR BEDROOM",
+            "evidence": [
+                "REAR BEDROOM has no built-in closet unlike the other two bedrooms"
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_bedrooms",
+            "question": "Which bedroom has the largest area?",
+            "answer": "Bedroom on the bottom/lower left corner",
+            "evidence": [
+                "Bedroom on the lower left corner has relatively larger area",
+                "Other two bedrooms have smaller dimensions"
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "more_windows",
+            "question": "Which bedroom has more windows?",
+            "answer": "Bedroom on the bottom/lower left corner.",
+            "evidence": [
+                "Bedroom on the bottom/lower left corner has more windows than the other two bedrooms"
+            ]
+        },
+        {
+            "id": "cmp3",
+            "task": "fewer_windows",
+            "question": "Which bedroom has fewer windows?",
+            "answer": "Bedroom on the bottom/lower right corner.",
+            "evidence": [
+                "Bedroom on the bottom/lower right corner has fewer window than the other two bedrooms."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_window",
+            "question": "How many windows does the BATH have?",
+            "answer": "One (1) window",
+            "evidence": [
+                "The BATH has just one (1) window."
+            ]
+        }
+    ]
+}

@@ -1,0 +1,89 @@
+{
+    "image_id": "2000-0002",
+    "image_path": "images/2000-0002.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_floor_area",
+            "question": "What is the listed total square footage of the 1st floor?",
+            "answer": "914 SQUARE FEET",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_safety_note",
+            "question": "What does the safety note say about smoke detectors near the hallway?",
+            "answer": "All smoke detectors linked w/ battery backup.",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "kitchen_appliances",
+            "question": "Which major appliances are located directly adjacent to the kitchen sink?",
+            "answer": "Dishwasher and the refrigerator.",
+            "evidence": [
+                "The floor plan shows the DW (dishwasher) on the left side of the sink.",
+                "The refrigerator is marked with 'REF' near the sink and prep area."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "adjacency",
+            "question": "Which room is directly adjacent to the Pantry?",
+            "answer": "The Kitchen",
+            "evidence": [
+                "The Pantry is located inside the Kitchen boundary and connects directly to it."
+            ]
+        },
+        {
+            "id": "sp3",
+            "task": "adjacency",
+            "question": "Which room is positioned directly beside the Stair, sharing the longest adjoining wall?",
+            "answer": "Bedroom 1",
+            "evidence": [
+                "Bedroom 1 shares the entire right-side wall of the Stair enclosure."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_room",
+            "question": "Which room in the plan has the largest area?",
+            "answer": "Living Room",
+            "evidence": [
+                "The Living Room spans approximately more than a quarter of the total area of the plan."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_window",
+            "question": "How many windows does the bedroom have?",
+            "answer": "One (1) window.",
+            "evidence": [
+                "Bedroom 1 has just one (1) window."
+            ]
+        }
+    ]
+}

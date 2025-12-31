@@ -1,0 +1,142 @@
+{
+    "image_id": "House-Floor-Plans-12-page-5",
+    "image_path": "images/House-Floor-Plans-12-page-5.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "living_area",
+            "question": "What is the living area square footage of the first floor?",
+            "answer": "846 square feet.",
+            "evidence": [
+                "The table lists Level 1 as 846 sq. ft. and Level 2 as 842 sq. ft."
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed at the bottom-left of the page?",
+            "answer": "COVER SHEET",
+            "evidence": [
+                "The lower-left text reads 'COVER SHEET'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "sheet_number",
+            "question": "What is the sheet number shown in the title block?",
+            "answer": "G001",
+            "evidence": [
+                "The title block on the right shows 'G001'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "deck_area",
+            "question": "According to the 'Deck Square Footage' table, what is the front porch area?",
+            "answer": "84 square feet.",
+            "evidence": [
+                "The table lists 'FRONT PORCH = 84 SQUARE FEET'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr5",
+            "task": "abbreviation_column",
+            "question": "According to the abbreviation column, what is 'IRC' stand for?",
+            "answer": "International Residential Code.",
+            "evidence": [
+                "The abbreviation column lists 'IRC' as 'International Residential Code.'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "map_orientation",
+            "question": "Which side of the sheet contains the location map?",
+            "answer": "Bottom-right quadrant.",
+            "evidence": [
+                "The color map with the highlighted project area is placed at the bottom-right area of the sheet."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "rendering_position",
+            "question": "Where is the exterior rendering of the house located on the sheet?",
+            "answer": "Upper-right quadrant.",
+            "evidence": [
+                "A colored front perspective rendering is placed in the upper-right section of the sheet above the square footage tables."
+            ]
+        },
+        {
+            "id": "sp3",
+            "task": "legend_location",
+            "question": "Where is the symbol legend located on the sheet with respect to the sheet list table?",
+            "answer": "Directly on the left side of the sheet list table.",
+            "evidence": [
+                "The 'SYMBOL LEGEND' box is directly on the left side of the sheet list table."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_abbreviations",
+            "question": "How many abbreviation columns are shown on the left side of the sheet?",
+            "answer": "Three (3) columns.",
+            "evidence": [
+                "The 'ABBREVIATIONS' section is divided into three vertical columns containing alphabetical abbreviation listings."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "sheet_count",
+            "question": "According to the Sheet List, how many sheets are included in this drawing set?",
+            "answer": "Eight (8) sheets.",
+            "evidence": [
+                "The Sheet List table contains 8 entries: G001, A101, A106, A201, A302, S101, S102, S103."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "larger_porch",
+            "question": "Which porch, front or back, has more deck square footage size?",
+            "answer": "The front porch",
+            "evidence": [
+                "Front porch is 84 square feet and rear porch is 32 square feet."
+            ]
+        }
+    ]
+}

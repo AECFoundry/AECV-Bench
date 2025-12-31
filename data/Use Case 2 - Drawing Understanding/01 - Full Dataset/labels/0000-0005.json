@@ -1,0 +1,100 @@
+{
+    "image_id": "0000-0005",
+    "image_path": "images/0000-0005.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_room_label",
+            "question": "What is the size of the ABRI VOITURE in square meters?",
+            "answer": "16.00 m²",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_area_text",
+            "question": "What is the area of the BAINS room in square meters?",
+            "answer": "6.31 m²",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "access_to_terrace",
+            "question": "Which bedroom has a window access to the terrace?",
+            "answer": "Chambre 3",
+            "evidence": [
+                "Chambre 3 has a window towards the terrace."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_bedrooms",
+            "question": "Which bedroom [CHAMBRE] has the largest area?",
+            "answer": "Chambre 1",
+            "evidence": [
+                "Chambre 1 10.95 m²",
+                "Chambre 2 10.20 m²",
+                "Chambre 3 10.02 m²"
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "largest_room",
+            "question": "Which room has the largest area in m²?",
+            "answer": "SALON and SEJOUR 44.38 m²",
+            "evidence": [
+                "Largest room is SALON and SEJOUR 44.38 m²",
+                "Second largest room is GARAGE 32.88 m²"
+            ]
+        },
+        {
+            "id": "cmp3",
+            "task": "adjacency",
+            "question": "Which bedroom is closer to the W.C?",
+            "answer": "Chambre 1",
+            "evidence": [
+                "Chambre 1 is closer to the W.C than the other bedrooms."
+            ]
+        },
+        {
+            "id": "cmp4",
+            "task": "larger_area",
+            "question": "Which room has the larger area, the GARAGE or the ABRI VOITURE?",
+            "answer": "The GARAGE",
+            "evidence": [
+                "GARAGE is 32.88 m2 and ABRI VOITURE is 16.00 m2."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "access_to_degt",
+            "question": "How many doors give access to the DEGT space?",
+            "answer": "Six (6) doors",
+            "evidence": [
+                "One each from Chambre 1, 2, 3, one from BAINS, one from W.C, and one from the corridor leading to SALON."
+            ]
+        }
+    ]
+}

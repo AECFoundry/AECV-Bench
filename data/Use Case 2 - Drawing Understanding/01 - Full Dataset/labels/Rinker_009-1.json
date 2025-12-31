@@ -1,0 +1,124 @@
+{
+    "image_id": "Rinker_009-1",
+    "image_path": "images/Rinker_009-1.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed in the title block on the lower right?",
+            "answer": "MECHANICAL LEVEL & FIRST FLOOR PLAN",
+            "evidence": [
+                "The title block reads: ‘MECHANICAL LEVEL & FIRST FLOOR PLAN’."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_number",
+            "question": "What is the sheet number?",
+            "answer": "A102",
+            "evidence": [
+                "The title block shows ‘A102’."
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "client_name",
+            "question": "What is the building name indicated near the title block?",
+            "answer": "M.E. RINKER, SR. HALL School of Building Construction",
+            "evidence": [
+                "Text at right reads ‘M.E. RINKER, SR. HALL School of Building Construction’."
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "university_name",
+            "question": "Which university is shown on the cover column?",
+            "answer": "UNIVERSITY OF FLORIDA – GAINESVILLE",
+            "evidence": [
+                "Printed vertically on the right side of the sheet."
+            ]
+        },
+        {
+            "id": "ocr5",
+            "task": "scale_first_floor",
+            "question": "What is the drawing scale for the first floor plan?",
+            "answer": "1/8\" = 1'-0\"",
+            "evidence": [
+                "The ‘FIRST FLOOR PLAN’ box at bottom right shows scale 1/8\" = 1'-0\"."
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "count_grid_columns",
+            "question": "Which room on the first floor plan is located inside the veritical grid G and I horizontally and grid 1 and 2 vertically?",
+            "answer": "The Structures Studio (0140)",
+            "evidence": [
+                "The room on the first floor plan located inside the veritical grid G and I horizontally and grid 1 and 2 vertically is the Structures Studio."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "room_orientation",
+            "question": "In the first floor plan, is the M.E.P Studio room located north or south of the central corridor?",
+            "answer": "South of the central corridor",
+            "evidence": [
+                "The M.E.P Studio room is located south of the central corridor."
+            ]
+        },
+        {
+            "id": "sp3",
+            "task": "mech_vs_floor_location",
+            "question": "Which half of the sheet contains the mechanical level plan?",
+            "answer": "The upper half of the sheet.",
+            "evidence": [
+                "Mechanical equipment symbols and the text ‘MECHANICAL LEVEL PLAN’ appear in the upper region above the main horizontal partition line."
+            ]
+        },
+        {
+            "id": "sp4",
+            "task": "mech_vs_floor_location",
+            "question": "Where is the soil and concrete lab located with respect to the structures studio on first floor?",
+            "answer": "The soil and concrete lab is located to the right of the structures studio.",
+            "evidence": [
+                "The soil and concrete lab is located to the right of the structures studio."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "elevator_shaft",
+            "question": "How many elevator shafts are shown in the building plan?",
+            "answer": "One (1) elevator shaft.",
+            "evidence": [
+                "One (1)elevator shaft is visible in the building plan."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_room",
+            "question": "Which room is largest? The Structures studio, M.E.P studio, or the soil and concrete lab?",
+            "answer": "The M.E.P studio",
+            "evidence": [
+                "The M.E.P studio is bigger than both the Structures studio and the soil and concrete lab."
+            ]
+        }
+    ]
+}

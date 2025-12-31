@@ -1,0 +1,97 @@
+{
+    "image_id": "3000-0005",
+    "image_path": "images/3000-0005.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_room_label",
+            "question": "What is the name of the room adjacent to the KITCHEN on the right?",
+            "answer": "MUDROOM",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_material_label",
+            "question": "What is the minimum clearance specified between the coats room to the stairs?",
+            "answer": "Minimum of 3'",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "room_identification",
+            "question": "What is the name of the room located next to the DINING area on the right?",
+            "answer": "KITCHEN",
+            "evidence": [
+                "The room immediately right of DINING is labeled KITCHEN."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "access_to_stairs",
+            "question": "Which room gives direct access to the stairs to the upper level?",
+            "answer": "LIVING ROOM",
+            "evidence": [
+                "The stairs are located in the LIVING ROOM"
+            ]
+        },
+        {
+            "id": "sp3",
+            "task": "access_to_outside",
+            "question": "Which room provides direct access to the 3'x4' back stoop?",
+            "answer": "Mudroom",
+            "evidence": [
+                "The mudroom has a door that leads to the 3'x4' back stoop"
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_space",
+            "question": "Which space has the largest area?",
+            "answer": "Living Room",
+            "evidence": [
+                "LIVING ROOM occupies the entire lower half of the plan"
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "larger_space",
+            "question": "Which room has more space? the WC or the MUDROOM?",
+            "answer": "The MUDROOM",
+            "evidence": [
+                "The MUDROOM has more space than the WC."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_toilet",
+            "question": "How many toilets (W.C) does the floor plan have?",
+            "answer": "One (1) toilet/W.C",
+            "evidence": [
+                "The floor plan has just one toilet (W.C)"
+            ]
+        }
+    ]
+}

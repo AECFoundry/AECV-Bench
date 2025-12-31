@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AECV-Bench QA Benchmark Evaluation Tool</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>AECV-Bench QA Benchmark Evaluation Tool</h1>
+        <div class="header-controls">
+            <div class="progress-info">
+                <span id="progress-text">Loading...</span>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by image ID or question...">
+                <div id="search-results" class="search-results"></div>
+            </div>
+            <button id="export-btn" class="btn btn-secondary">Export Results</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Left Panel: Image and Question -->
+            <div class="left-panel" id="left-panel">
+                <div class="image-container" id="image-container">
+                    <div class="zoom-controls">
+                        <button class="btn btn-zoom" id="zoom-out" title="Zoom Out">-</button>
+                        <span id="zoom-level">100%</span>
+                        <button class="btn btn-zoom" id="zoom-in" title="Zoom In">+</button>
+                        <button class="btn btn-zoom" id="zoom-reset" title="Reset Zoom">Reset</button>
+                        <button class="btn btn-zoom" id="zoom-fit" title="Fit to Container">Fit</button>
+                    </div>
+                    <div class="image-wrapper" id="image-wrapper">
+                        <img id="floor-plan-image" src="" alt="Floor Plan" draggable="false">
+                    </div>
+                </div>
+                <div class="question-section">
+                    <div class="metadata">
+                        <span class="badge" id="qa-type-badge">-</span>
+                        <span class="badge secondary" id="task-badge">-</span>
+                        <span class="qa-id" id="qa-id-text">-</span>
+                    </div>
+                    <h3>Question</h3>
+                    <p id="question-text" class="question-text">Loading...</p>
+                    <h3>Ground Truth</h3>
+                    <p id="ground-truth-text" class="ground-truth-text">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Resizable Splitter -->
+            <div class="splitter" id="splitter"></div>
+
+            <!-- Right Panel: Model Responses -->
+            <div class="right-panel" id="right-panel">
+                <div class="panel-header">
+                    <h2>Model Responses</h2>
+                    <div class="filter-controls">
+                        <label>
+                            <input type="checkbox" id="show-unevaluated-only">
+                            Show unevaluated only
+                        </label>
+                    </div>
+                </div>
+                <div id="model-responses" class="model-responses">
+                    <!-- Model response cards will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="navigation">
+            <button id="prev-btn" class="btn btn-nav">&larr; Previous</button>
+            <div class="nav-info">
+                <input type="number" id="nav-input" min="1" value="1">
+                <span>of <span id="total-count">-</span></span>
+            </div>
+            <button id="next-btn" class="btn btn-nav">Next &rarr;</button>
+        </div>
+    </footer>
+
+    <script>
+        // State
+        let currentIndex = 0;
+        let totalItems = 0;
+        let currentData = null;
+        let showUnevaluatedOnly = false;
+        let zoomLevel = 100;
+        const ZOOM_STEP = 25;
+        const MIN_ZOOM = 50;
+        const MAX_ZOOM = 400;
+
+        // DOM Elements
+        const floorPlanImage = document.getElementById('floor-plan-image');
+        const questionText = document.getElementById('question-text');
+        const groundTruthText = document.getElementById('ground-truth-text');
+        const qaTypeBadge = document.getElementById('qa-type-badge');
+        const taskBadge = document.getElementById('task-badge');
+        const qaIdText = document.getElementById('qa-id-text');
+        const modelResponses = document.getElementById('model-responses');
+        const progressText = document.getElementById('progress-text');
+        const totalCount = document.getElementById('total-count');
+        const navInput = document.getElementById('nav-input');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        const exportBtn = document.getElementById('export-btn');
+        const showUnevaluatedCheckbox = document.getElementById('show-unevaluated-only');
+        const leftPanel = document.getElementById('left-panel');
+        const rightPanel = document.getElementById('right-panel');
+        const splitter = document.getElementById('splitter');
+        const imageWrapper = document.getElementById('image-wrapper');
+        const imageContainer = document.getElementById('image-container');
+
+        // Zoom controls
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const zoomResetBtn = document.getElementById('zoom-reset');
+        const zoomFitBtn = document.getElementById('zoom-fit');
+        const zoomLevelDisplay = document.getElementById('zoom-level');
+
+        // ============= ZOOM FUNCTIONALITY =============
+        function updateZoom() {
+            floorPlanImage.style.width = `${zoomLevel}%`;
+            floorPlanImage.style.height = 'auto';
+            zoomLevelDisplay.textContent = `${zoomLevel}%`;
+        }
+
+        zoomInBtn.addEventListener('click', () => {
+            if (zoomLevel < MAX_ZOOM) {
+                zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+                updateZoom();
+            }
+        });
+
+        zoomOutBtn.addEventListener('click', () => {
+            if (zoomLevel > MIN_ZOOM) {
+                zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+                updateZoom();
+            }
+        });
+
+        zoomResetBtn.addEventListener('click', () => {
+            zoomLevel = 100;
+            updateZoom();
+            imageWrapper.scrollTop = 0;
+            imageWrapper.scrollLeft = 0;
+        });
+
+        zoomFitBtn.addEventListener('click', () => {
+            // Fit image to container
+            const containerRect = imageWrapper.getBoundingClientRect();
+            const imgNaturalWidth = floorPlanImage.naturalWidth;
+            const imgNaturalHeight = floorPlanImage.naturalHeight;
+
+            if (imgNaturalWidth && imgNaturalHeight) {
+                const widthRatio = (containerRect.width / imgNaturalWidth) * 100;
+                const heightRatio = (containerRect.height / imgNaturalHeight) * 100;
+                zoomLevel = Math.min(widthRatio, heightRatio, 100);
+                zoomLevel = Math.max(MIN_ZOOM, Math.round(zoomLevel));
+                updateZoom();
+            }
+        });
+
+        // Mouse wheel zoom
+        imageWrapper.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                if (e.deltaY < 0 && zoomLevel < MAX_ZOOM) {
+                    zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+                } else if (e.deltaY > 0 && zoomLevel > MIN_ZOOM) {
+                    zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+                }
+                updateZoom();
+            }
+        });
+
+        // Pan image with mouse drag
+        let isPanning = false;
+        let panStartX, panStartY, scrollStartX, scrollStartY;
+
+        imageWrapper.addEventListener('mousedown', (e) => {
+            if (e.button === 0) { // Left mouse button
+                isPanning = true;
+                panStartX = e.clientX;
+                panStartY = e.clientY;
+                scrollStartX = imageWrapper.scrollLeft;
+                scrollStartY = imageWrapper.scrollTop;
+                imageWrapper.style.cursor = 'grabbing';
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isPanning) {
+                const dx = e.clientX - panStartX;
+                const dy = e.clientY - panStartY;
+                imageWrapper.scrollLeft = scrollStartX - dx;
+                imageWrapper.scrollTop = scrollStartY - dy;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isPanning = false;
+            imageWrapper.style.cursor = 'grab';
+        });
+
+        // ============= RESIZABLE SPLITTER =============
+        let isResizing = false;
+        let startX, startLeftWidth;
+
+        splitter.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            startX = e.clientX;
+            startLeftWidth = leftPanel.offsetWidth;
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            const containerWidth = leftPanel.parentElement.offsetWidth;
+            const dx = e.clientX - startX;
+            let newLeftWidth = startLeftWidth + dx;
+
+            // Constrain between 20% and 80%
+            const minWidth = containerWidth * 0.2;
+            const maxWidth = containerWidth * 0.8;
+            newLeftWidth = Math.max(minWidth, Math.min(maxWidth, newLeftWidth));
+
+            const leftPercent = (newLeftWidth / containerWidth) * 100;
+            leftPanel.style.width = `${leftPercent}%`;
+            rightPanel.style.width = `${100 - leftPercent - 0.5}%`; // Account for splitter width
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        });
+
+        // ============= QA LOADING =============
+        async function loadQA(index) {
+            try {
+                const response = await fetch(`/api/qa/${index}`);
+                if (!response.ok) throw new Error('Failed to load QA');
+
+                currentData = await response.json();
+                currentIndex = currentData.index;
+                totalItems = currentData.total;
+
+                // Update left panel
+                floorPlanImage.src = `/api/image/${currentData.image_id}`;
+                floorPlanImage.alt = `Floor Plan: ${currentData.image_id}`;
+                questionText.textContent = currentData.question;
+                groundTruthText.textContent = currentData.ground_truth;
+                qaTypeBadge.textContent = currentData.qa_type;
+                taskBadge.textContent = currentData.task;
+                qaIdText.textContent = `${currentData.image_id} / ${currentData.qa_id}`;
+
+                // Reset zoom when loading new image
+                zoomLevel = 100;
+                updateZoom();
+                imageWrapper.scrollTop = 0;
+                imageWrapper.scrollLeft = 0;
+
+                // Update navigation
+                totalCount.textContent = totalItems;
+                navInput.value = currentIndex + 1;
+                navInput.max = totalItems;
+                prevBtn.disabled = currentIndex <= 0;
+                nextBtn.disabled = currentIndex >= totalItems - 1;
+
+                // Render model responses
+                renderModelResponses();
+
+                // Update stats
+                updateStats();
+            } catch (error) {
+                console.error('Error loading QA:', error);
+                questionText.textContent = 'Error loading data';
+            }
+        }
+
+        // Render model response cards
+        function renderModelResponses() {
+            if (!currentData) return;
+
+            const models = Object.keys(currentData.model_answers).sort();
+            modelResponses.innerHTML = '';
+
+            for (const modelName of models) {
+                const answer = currentData.model_answers[modelName];
+                const evaluation = currentData.evaluations[modelName];
+
+                // Filter if checkbox is checked
+                if (showUnevaluatedOnly && evaluation) continue;
+
+                const card = document.createElement('div');
+                card.className = 'model-card';
+                if (evaluation) {
+                    card.classList.add(evaluation.is_correct ? 'evaluated-correct' : 'evaluated-incorrect');
+                }
+
+                const displayName = modelName.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+                const isCorrectActive = evaluation && evaluation.is_correct === true ? 'active' : '';
+                const isIncorrectActive = evaluation && evaluation.is_correct === false ? 'active' : '';
+
+                card.innerHTML = `
+                    <div class="model-header">
+                        <h4>${displayName}</h4>
+                        ${evaluation ? `<span class="eval-status ${evaluation.is_correct ? 'correct' : 'incorrect'}">
+                            ${evaluation.is_correct ? 'Correct' : 'Incorrect'}
+                        </span>` : ''}
+                    </div>
+                    <div class="model-answer">${escapeHtml(answer)}</div>
+                    <div class="eval-buttons">
+                        <button class="btn btn-correct ${isCorrectActive}" data-model="${modelName}" data-correct="true">
+                            Correct
+                        </button>
+                        <button class="btn btn-incorrect ${isIncorrectActive}" data-model="${modelName}" data-correct="false">
+                            Incorrect
+                        </button>
+                    </div>
+                `;
+
+                // Add event listeners for buttons
+                const correctBtn = card.querySelector('.btn-correct');
+                const incorrectBtn = card.querySelector('.btn-incorrect');
+
+                correctBtn.addEventListener('click', () => evaluateModel(modelName, true));
+                incorrectBtn.addEventListener('click', () => evaluateModel(modelName, false));
+
+                modelResponses.appendChild(card);
+            }
+
+            if (modelResponses.children.length === 0) {
+                modelResponses.innerHTML = '<p class="no-results">All responses have been evaluated for this question.</p>';
+            }
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/\n/g, '<br>');
+        }
+
+        // Submit evaluation
+        async function evaluateModel(modelName, isCorrect) {
+            console.log('Evaluating:', modelName, isCorrect); // Debug log
+            try {
+                const response = await fetch('/api/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        qa_key: currentData.key,
+                        model_name: modelName,
+                        is_correct: isCorrect
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to save evaluation');
+
+                const result = await response.json();
+                console.log('Evaluation saved:', result); // Debug log
+
+                // Update local state
+                currentData.evaluations[modelName] = { is_correct: isCorrect };
+                renderModelResponses();
+                updateStats();
+            } catch (error) {
+                console.error('Error saving evaluation:', error);
+                alert('Failed to save evaluation');
+            }
+        }
+
+        // Update progress stats
+        async function updateStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                progressText.textContent = `${stats.fully_evaluated} / ${stats.total_qa_items} fully evaluated | ${stats.total_evaluations} total evaluations`;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Navigation
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) loadQA(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < totalItems - 1) loadQA(currentIndex + 1);
+        });
+
+        navInput.addEventListener('change', () => {
+            const newIndex = parseInt(navInput.value) - 1;
+            if (newIndex >= 0 && newIndex < totalItems) {
+                loadQA(newIndex);
+            } else {
+                navInput.value = currentIndex + 1;
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Skip if typing in input
+            if (e.target.tagName === 'INPUT') return;
+
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                loadQA(currentIndex - 1);
+            } else if (e.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                loadQA(currentIndex + 1);
+            }
+        });
+
+        // Search functionality
+        let searchTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const query = searchInput.value.trim();
+
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+
+                    if (data.results.length > 0) {
+                        searchResults.innerHTML = data.results.map(r => `
+                            <div class="search-result-item" onclick="goToResult(${r.index})">
+                                <strong>${r.image_id} / ${r.qa_id}</strong>
+                                <span>${r.question}</span>
+                            </div>
+                        `).join('');
+                        searchResults.style.display = 'block';
+                    } else {
+                        searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                        searchResults.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                }
+            }, 300);
+        });
+
+        function goToResult(index) {
+            loadQA(index);
+            searchResults.style.display = 'none';
+            searchInput.value = '';
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box')) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Export functionality
+        exportBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/export');
+                const data = await response.json();
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `qa_evaluations_${new Date().toISOString().slice(0, 10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Failed to export evaluations');
+            }
+        });
+
+        // Filter toggle
+        showUnevaluatedCheckbox.addEventListener('change', (e) => {
+            showUnevaluatedOnly = e.target.checked;
+            renderModelResponses();
+        });
+
+        // Initialize
+        loadQA(0);
+    </script>
+</body>
+</html>

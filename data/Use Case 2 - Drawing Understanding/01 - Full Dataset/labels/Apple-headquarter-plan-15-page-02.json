@@ -1,0 +1,109 @@
+{
+    "image_id": "Apple-headquarter-plan-15-page-02",
+    "image_path": "images/Apple-headquarter-plan-15-page-02.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "scale_reading",
+            "question": "What is the drawing scale indicated in the title block?",
+            "answer": "1\" = 64'",
+            "evidence": [
+                "The 'Scale @ Arch E1' field in the title block reads '1\"=64''."
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_number",
+            "question": "What sheet number is shown for this drawing?",
+            "answer": "P-8.02",
+            "evidence": [
+                "The sheet number 'P-8.02' appears at the bottom-right corner of the title block."
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "issued_date",
+            "question": "When was the issued date for the 'Planned development permit' revision?",
+            "answer": "08/09/11",
+            "evidence": [
+                "The planned development permit revision was issued on '08/09/11'."
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "orientation",
+            "question": "Are the access blocks positioned symmetrically across opposite sides of the ring?",
+            "answer": "No, not symmetrically.",
+            "evidence": [
+                "The access blocks are not positioned symmetrically across opposite sides of the ring."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "general_notes_location",
+            "question": "Where is the General notes section located in the drawing?",
+            "answer": "The top right corner of the drawing.",
+            "evidence": [
+                "The General notes section is located in the top right corner of the drawing."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_access_cores",
+            "question": "How many labeled access blocks are distributed around the building ring on this sheet?",
+            "answer": "Nine (9)",
+            "evidence": [
+                "Nine rectangular access/core blocks are evenly positioned around the circular building ring."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "count_radial_dividers",
+            "question": "How many radial division lines extend from the center to the ring?",
+            "answer": "Eight (8)",
+            "evidence": [
+                "Eight dashed radial lines extend outward from the central point to the building ring."
+            ]
+        },
+        {
+            "id": "cnt3",
+            "task": "count_section_callouts",
+            "question": "How many section view callouts are present in the drawing?",
+            "answer": "Three (3)",
+            "evidence": [
+                "Three section view callouts are present in the drawing. These are labeled as 'P-10.00', 'P-10.01/10.02', and 'P-10.03'"
+            ]
+        },
+        {
+            "id": "cnt4",
+            "task": "count_consultants",
+            "question": "How many consulting firms are included on this floor plan?",
+            "answer": "Five (5) consultants.",
+            "evidence": [
+                "Foster + Partners, Arup, OLIN, KIER & WRIGHT, and alta"
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "more_core_access_quadrant",
+            "question": "Which quadrant of the circular building has more core access?",
+            "answer": "Quadrant 1 or the top right corner.",
+            "evidence": [
+                "Quadrant 1 has more core access than the others."
+            ]
+        }
+    ]
+}

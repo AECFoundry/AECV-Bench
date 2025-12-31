@@ -1,0 +1,157 @@
+{
+    "image_id": "Apple-headquarter-plan-15-page-13",
+    "image_path": "images/Apple-headquarter-plan-15-page-13.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed in the title block?",
+            "answer": "Proposed Main Building Section Typical Entrance",
+            "evidence": [
+                "The title block lists the sheet title as 'Proposed Main Building Section Typical Entrance'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_number",
+            "question": "What sheet number is shown for this drawing?",
+            "answer": "P-10.00",
+            "evidence": [
+                "The bottom-right of the title block shows the sheet number 'P-10.00'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "scale_reading",
+            "question": "What is the drawing scale indicated in the title block?",
+            "answer": "1/8\" = 1'",
+            "evidence": [
+                "The title block states 'Scale 1/8\" = 1'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "project_number",
+            "question": "What is the project number written in the title block?",
+            "answer": "1858",
+            "evidence": [
+                "'1858' is printed under the project number in the title block."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr5",
+            "task": "top_elevation",
+            "question": "What is the elevation of the top of the penthouse?",
+            "answer": "El. +237'-4\"",
+            "evidence": [
+                "'El. +237'-4\"' is printed as the top elevation of the penthouse."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "mechanical_space_location",
+            "question": "Where are the Mechanical Spaces located relative to the central elevator shaft?",
+            "answer": "They are located directly to the left and right of the elevator shaft, near the roof.",
+            "evidence": [
+                "The drawing labels 'Mechanical Space' on both sides of the elevator shaft under the sloped roof."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "section_view_symmetry",
+            "question": "Is the section view a complete symmetrical view along the elevator shaft?",
+            "answer": "No, it is not a complete symmetrical view along the elevator shaft.",
+            "evidence": [
+                "The section view is not a complete symmetrical view along the elevator shaft."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "identify_vertical_elements",
+            "question": "How many vertical circulation elements are shown in the section?",
+            "answer": "Two stairwells and one central elevator shaft.",
+            "evidence": [
+                "The section clearly labels two 'Stairwell' areas on the left and right sides and one 'Elevator Shaft' in the center."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "count_lobby_levels",
+            "question": "How many lobby levels are visible in the section?",
+            "answer": "Six (6) lobby levels.",
+            "evidence": [
+                "The word 'Lobby' appears six times vertically on each side of the elevator shaft."
+            ]
+        },
+        {
+            "id": "cnt3",
+            "task": "parking_levels",
+            "question": "How many parking levels are visible below grade?",
+            "answer": "Two (2) parking levels.",
+            "evidence": [
+                "Two levels labeled 'Parking' appear beneath the grade line."
+            ]
+        },
+        {
+            "id": "cnt4",
+            "task": "count_consultants",
+            "question": "How many consulting firms are included on this floor plan?",
+            "answer": "Five (5) consultants.",
+            "evidence": [
+                "Foster + Partners, Arup, OLIN, KIER & WRIGHT, and alta"
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "more_stairwell",
+            "question": "Which side of the elevator shaft has more stairwell? Left or right?",
+            "answer": "The right side",
+            "evidence": [
+                "The right side has more stairwell."
+            ]
+        }
+    ]
+}

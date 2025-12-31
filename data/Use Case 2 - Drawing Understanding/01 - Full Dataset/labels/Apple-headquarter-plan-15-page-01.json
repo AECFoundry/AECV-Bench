@@ -1,0 +1,133 @@
+{
+    "image_id": "Apple-headquarter-plan-15-page-01",
+    "image_path": "images/Apple-headquarter-plan-15-page-01.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "consulting_firms",
+            "question": "What are the consulting firms listed in the title block?",
+            "answer": "6 consulting firms: Foster + Partners, Arup, OLIN, KIER & WRIGHT, alta and WATRY DESIGN, INC.",
+            "evidence": [
+                "The title block lists the consulting firms: Foster + Partners, Arup, OLIN, KIER & WRIGHT, alta and WATRY DESIGN, INC."
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_titleblock_client",
+            "question": "What is the client of the project written on the title block?",
+            "answer": "Apple Inc.",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "read_project_name",
+            "question": "What is the project name written on the title block?",
+            "answer": "Apple Campus 2",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "scale_reading",
+            "question": "What scale is listed in the title block for this plan?",
+            "answer": "1\" = 64'",
+            "evidence": [
+                "The 'Scale @ Arch E1' field in the title block reads '1\"=64''. on the bottom-right corner."
+            ]
+        },
+        {
+            "id": "ocr5",
+            "task": "internal_radius",
+            "question": "What is the internal radius of the circular building?",
+            "answer": "580'-11\"",
+            "evidence": [
+                "The internal radius of the circular building is 580'-11\"."
+            ]
+        },
+        {
+            "id": "ocr6",
+            "task": "external_radius",
+            "question": "What is the external (outer) radius of the circular building?",
+            "answer": "760'-7\"",
+            "evidence": [
+                "The external (outer) radius of the circular building is 760'-7\"."
+            ]
+        },
+        {
+            "id": "ocr7",
+            "task": "restaurant_space",
+            "question": "What is the size of Restaurant space in square feet?",
+            "answer": "58,000 square feet",
+            "evidence": [
+                "The Restaurant space is labeled as '58,000 square feet'."
+            ]
+        },
+        {
+            "id": "ocr8",
+            "task": "right_side_road",
+            "question": "What is the name of the road labeled to the right side of the plan?",
+            "answer": "TANTAU AVENUE",
+            "evidence": [
+                "The right edge of the sheet contains the label 'TANTAU AVENUE' beside the site boundary."
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "adjacency",
+            "question": "Which side of the ring (north, south, east, or west), on the drawing, has the Apple transit center Bus drop off area?",
+            "answer": "East",
+            "evidence": [
+                "On the drawing, the east side of the ring has the Apple transit center Bus drop off area."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "count_access_cores",
+            "question": "How many labeled access blocks are distributed around the building ring?",
+            "answer": "Nine (9)",
+            "evidence": [
+                "Nine rectangular core blocks appear around the circular ring."
+            ]
+        },
+        {
+            "id": "cnt2",
+            "task": "count_radial_paths",
+            "question": "How many radial pedestrian paths originate from the courtyard center and extend outward?",
+            "answer": "Nine (9)",
+            "evidence": [
+                "Nine radial paths extend from the center circle toward the ring."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "more_core_access_quadrant",
+            "question": "Which quadrant of the circular building is closer to the Tantau Auditorium and Visitor Parking Structure?",
+            "answer": "Quadrant 4 or the bottom right corner.",
+            "evidence": [
+                "Quadrant 4 of the circular buidling is closer to the Tantau Auditorium and Visitor Parking Structure."
+            ]
+        }
+    ]
+}

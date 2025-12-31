@@ -1,0 +1,103 @@
+{
+    "image_id": "House-Floor-Plans-12-page-4",
+    "image_path": "images/House-Floor-Plans-12-page-4.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "roof_insulation_type",
+            "question": "What insulation type is noted inside the roof assembly on the wall section view?",
+            "answer": "R-38 Batt Insulation.",
+            "evidence": [
+                "The label 'R-38 Batt Insulation' appears inside the roof assembly on the wall section view."
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_number",
+            "question": "What is the sheet number in the title block?",
+            "answer": "A302",
+            "evidence": [
+                "The title block shows 'A302' at the lower-right."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed at the bottom of the page?",
+            "answer": "BUILDING SECTIONS",
+            "evidence": [
+                "The bottom-left text reads 'BUILDING SECTIONS'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "porch_floor",
+            "question": "According to the section view - porch detail, what is the max rise and min run of the stairs?",
+            "answer": "Max rise: 7'-3/4\", Min run: 10\".",
+            "evidence": [
+                "The section view - porch detail label includes the note 'Max rise: 7'-3/4\", Min run: 10\"."
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "crawlspace_location",
+            "question": "Where is the crawlspace shown in the bottom-right building section?",
+            "answer": "Below the first floor, at the bottom left portion of the section.",
+            "evidence": [
+                "The label 'CRAWL SPACE' appears under the floor structure in the left lower area of the section."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "section_count",
+            "question": "How many building sections are shown on this sheet? and what are the section names?",
+            "answer": "Four (4) sections. 1-Building Section, 2-Wall Section, 3-Typ Porch - Flashing detail, and 4-Section view - porch",
+            "evidence": [
+                "The sheet contains 1-Building Section, 2-Wall Section, 3-Typ Porch - Flashing detail, and 4-Section view - porch."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "roof_pitch_view",
+            "question": "Which view provides the most detailed information about the roof pitch?",
+            "answer": "The wall section view",
+            "evidence": [
+                "The wall section view provides the most detailed information about the roof pitch."
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "section_for_stairs",
+            "question": "Which view gives better information about the section view of the stairs?",
+            "answer": "The building section view.",
+            "evidence": [
+                "The building section view has more information about the stairs."
+            ]
+        }
+    ]
+}

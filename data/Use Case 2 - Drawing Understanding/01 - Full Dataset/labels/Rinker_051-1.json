@@ -1,0 +1,106 @@
+{
+    "image_id": "Rinker_051-1",
+    "image_path": "images/Rinker_051-1.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "column_size_lookup",
+            "question": "According to the column size schedule, what is the cross-section of C2 on the second floor?",
+            "answer": "W12×79 column section.",
+            "evidence": [
+                "The column size schedule lists C2 on the second floor as W12×79."
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "sheet_title",
+            "question": "What is the sheet title printed in the title block?",
+            "answer": "FOUNDATION SLAB-ON-GRADE PLAN",
+            "evidence": [
+                "The title block clearly states 'FOUNDATION / SLAB-ON-GRADE PLAN'."
+            ],
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr3",
+            "task": "drawing_number",
+            "question": "What is the drawing number shown on this drawing?",
+            "answer": "S1.0",
+            "evidence": [
+                "The lower-right corner of the title block shows the drawing number 'S1.0'."
+            ]
+        },
+        {
+            "id": "ocr4",
+            "task": "issued_date",
+            "question": "When was the issued date for this drawing?",
+            "answer": "11-21-01",
+            "evidence": [
+                "The bottom of the sheet lists the issued date as 11-21-01."
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "grid_zone_identification",
+            "question": "Which footing type is located at the intersection of gridlines C and 4?",
+            "answer": "Footing type F1.",
+            "evidence": [
+                "The footing marker at grid C-4 is labeled 'F1'."
+            ]
+        },
+        {
+            "id": "sp2",
+            "task": "directional_relationship",
+            "question": "Is the cast-in-place concrete stair enclosure located east or west of the gridline labeled 'K'?",
+            "answer": "East of gridline K.",
+            "evidence": [
+                "The cast-in-place concrete stair enclosure appears to the right (east) of gridline K."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_footing_type",
+            "question": "Which footing type listed in the spread footing schedule has the largest dimensions?",
+            "answer": "Footing type F10 (10'-0\" × 10'-0\").",
+            "evidence": [
+                "The Spread Footing Schedule lists F10 as 10'-0\" × 10'-0\", the largest size on the schedule."
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "thick_footing_type",
+            "question": "Which footing type listed in the spread footing schedule has the largest thickness?",
+            "answer": "Footing type F10 (10'-0\" × 10'-0\").",
+            "evidence": [
+                "The Spread Footing Schedule lists F10 as 10'-0\" × 10'-0\", with the largest thickness 28\" on the schedule."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "footing_typology",
+            "question": "How many footing typology are available on the spread footing schedule?",
+            "answer": "Seven (7) footing types",
+            "evidence": [
+                "There are seven (7) footing typology: F1, F5, F6, F7, F8, F9, and F10."
+            ]
+        }
+    ]
+}

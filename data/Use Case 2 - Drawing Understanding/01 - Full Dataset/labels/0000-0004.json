@@ -1,0 +1,91 @@
+{
+    "image_id": "0000-0004",
+    "image_path": "images/0000-0004.png",
+    "object_counts": {
+        "Door": "-",
+        "Window": "-",
+        "Space": "-",
+        "Bedroom": "-",
+        "Toilet": "-"
+    },
+    "ocr_qa": [
+        {
+            "id": "ocr1",
+            "task": "read_room_label",
+            "question": "What is the area of the small TOILET between the CHAMBRE 1 and the CHAMBRE 2?",
+            "answer": "2.70 m²",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        },
+        {
+            "id": "ocr2",
+            "task": "read_area_text",
+            "question": "What is the area of the Chambre 2 in square meters?",
+            "answer": "11.63 m²",
+            "bbox": [
+                "<x1>",
+                "<y1>",
+                "<x2>",
+                "<y2>"
+            ]
+        }
+    ],
+    "spatial_qa": [
+        {
+            "id": "sp1",
+            "task": "adjacency",
+            "question": "Which room is directly connected to the GARAGE with an internal door?",
+            "answer": "The A. CUISINE and the ABRI VOITURE.",
+            "evidence": [
+                "There is a door between GARAGE and the A. CUISINE and the ABRI VOITURE."
+            ]
+        }
+    ],
+    "comparison_qa": [
+        {
+            "id": "cmp1",
+            "task": "largest_bedrooms",
+            "question": "Which bedroom [CHAMBRE] has the largest area?",
+            "answer": "Chambre 1",
+            "evidence": [
+                "Chambre 1 11.88 m²",
+                "Chambre 2 11.63 m²",
+                "Chambre 3 11.45 m²"
+            ]
+        },
+        {
+            "id": "cmp2",
+            "task": "largest_room",
+            "question": "Which room has the second largest area?",
+            "answer": "Garage",
+            "evidence": [
+                "Largest room is SALON and SEJOUR 44.81 m²",
+                "Second largest room is GARAGE 23.56 m²"
+            ]
+        },
+        {
+            "id": "cmp3",
+            "task": "largest_toilet",
+            "question": "Which toilet( TOILET, W.C or BAINS) has the largest area?",
+            "answer": "The BAINS.",
+            "evidence": [
+                "BAINS is 5.90 m², TOILET is 2.70 m², and W.C is 1.53 m²."
+            ]
+        }
+    ],
+    "counting_qa": [
+        {
+            "id": "cnt1",
+            "task": "dinning_chairs",
+            "question": "How many chairs are shown in the CUISINE room?",
+            "answer": "Five (5) chairs.",
+            "evidence": [
+                "CUISINE room is depicted with 5 chairs and a dinning table."
+            ]
+        }
+    ]
+}
