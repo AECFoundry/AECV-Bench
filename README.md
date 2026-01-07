@@ -249,7 +249,7 @@ If you use this framework in your research, please cite:
 @misc{aecv-bench,
   title={AECV-Bench: Benchmarking Multimodal Models on Architectural and Engineering Drawing Understanding},
   author={Authors: Aleksei Kondratenko, PhD; Houssame E. Hsain; Mussie Birhane; Guido Maciocci},
-  year={2025},
+  year={2026},
   url={https://github.com/AECFoundry/AECV-Bench}
 }
 ```
