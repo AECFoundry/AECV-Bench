@@ -1,0 +1,13 @@
+{
+  "model": "google/gemma-4-31b-it",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 328.7,
+  "max_workers": 20,
+  "total_cost_usd": 0.0079,
+  "total_prompt_tokens": 59294,
+  "total_completion_tokens": 2171,
+  "mean_latency_s": 33.18,
+  "median_latency_s": 28.05,
+  "max_latency_s": 125.68
+}

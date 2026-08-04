@@ -1,0 +1,13 @@
+{
+  "model": "qwen/qwen3.7-plus",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 96.6,
+  "max_workers": 20,
+  "total_cost_usd": 0.1222,
+  "total_prompt_tokens": 263564,
+  "total_completion_tokens": 10488,
+  "mean_latency_s": 14.67,
+  "median_latency_s": 10.77,
+  "max_latency_s": 51.09
+}

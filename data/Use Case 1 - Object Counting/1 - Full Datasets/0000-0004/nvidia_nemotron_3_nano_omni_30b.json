@@ -1,0 +1,20 @@
+{
+  "description": "Schemafor floor plan element counts.",
+  "properties": {
+    "Door": 5,
+    "Window": 7,
+    "Space": 19,
+    "Bedroom": 3,
+    "Toilet": 2
+  },
+  "required": [
+    "Door",
+    "Window",
+    "Space",
+    "Bedroom",
+    "Toilet"
+  ],
+  "title": "PlanElements",
+  "type": "object",
+  "additionalProperties": false
+}

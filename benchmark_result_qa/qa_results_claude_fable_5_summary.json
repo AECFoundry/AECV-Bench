@@ -1,0 +1,13 @@
+{
+  "model": "anthropic/claude-fable-5",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 360.6,
+  "max_workers": 20,
+  "total_cost_usd": 7.5071,
+  "total_prompt_tokens": 661729,
+  "total_completion_tokens": 17797,
+  "mean_latency_s": 36.3,
+  "median_latency_s": 31.87,
+  "max_latency_s": 90.97
+}

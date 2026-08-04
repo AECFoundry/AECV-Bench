@@ -1,0 +1,13 @@
+{
+  "model": "openai/gpt-5.5",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 416.5,
+  "max_workers": 20,
+  "total_cost_usd": 7.3577,
+  "total_prompt_tokens": 1124622,
+  "total_completion_tokens": 57820,
+  "mean_latency_s": 36.8,
+  "median_latency_s": 29.04,
+  "max_latency_s": 189.31
+}

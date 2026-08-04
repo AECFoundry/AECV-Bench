@@ -6,6 +6,7 @@ compared to ground truth. Returns binary scores: 1.0 for correct, 0.0 for incorr
 """
 import csv
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, Optional
 from collections import defaultdict
 import numpy as np
@@ -16,26 +17,29 @@ from ..utils.config import get_open_router_api_key, require_api_key
 
 class QAEvaluator:
     """Evaluates QA answers using LLM-as-Judge via OpenRouter."""
-    
+
     def __init__(
         self,
         judge_model: str = "openai/gpt-4o",
         open_router_api_key: Optional[str] = None,
         url: str = "https://openrouter.ai/api/v1/chat/completions",
-        temperature: float = 0.0
+        temperature: float = 0.0,
+        max_workers: int = 20
     ):
         """
         Initialize the QA evaluator.
-        
+
         Args:
             judge_model: Model identifier for the judge LLM (default: openai/gpt-4o)
             open_router_api_key: OpenRouter API key (if None, will try to get from env)
             url: OpenRouter API URL
             temperature: Temperature for judge model (default 0.0 for deterministic)
+            max_workers: Number of concurrent judge calls (default 20)
         """
         self.judge_model = judge_model
         self.url = url
         self.temperature = temperature
+        self.max_workers = max_workers
         
         # Get API key
         if open_router_api_key is None or not open_router_api_key.strip():
@@ -211,44 +215,50 @@ Your response (just the number, nothing else):"""
         with open(csv_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             rows = list(reader)
-            total_rows = len(rows)
-            
-            print(f"Evaluating {total_rows} question-answer pairs...")
-            
-            for idx, row in enumerate(rows, 1):
-                question = row.get('question', '').strip()
-                predicted = row.get('model_answer', '').strip()
-                ground_truth = row.get('ground_truth', '').strip()
-                task = row.get('task', 'unknown')
-                qa_type = row.get('qa_type', 'unknown')
-                qa_id = row.get('qa_id', '')
-                image_id = row.get('image_id', '')
-                
-                # Evaluate using LLM judge
-                if idx % 10 == 0:
-                    print(f"  Progress: {idx}/{total_rows} ({100*idx/total_rows:.1f}%)")
-                
-                scores = self.evaluate_answer(question, ground_truth, predicted, task, qa_type)
-                
-                result = {
-                    'image_id': image_id,
-                    'qa_id': qa_id,
-                    'task': task,
-                    'qa_type': qa_type,
-                    'question': question,
-                    'ground_truth': ground_truth,
-                    'predicted': predicted,
-                    'score': scores['score'],
-                    'overall': scores['overall']
-                }
-                results.append(result)
-                
-                # Update statistics
-                task_stats[task]['total'] += 1
-                task_stats[task]['scores'].append(scores['overall'])
-                
-                qa_type_stats[qa_type]['total'] += 1
-                qa_type_stats[qa_type]['scores'].append(scores['overall'])
+        total_rows = len(rows)
+
+        print(f"Evaluating {total_rows} question-answer pairs with up to {self.max_workers} concurrent judge calls...")
+
+        def judge_row(idx_row):
+            idx, row = idx_row
+            question = row.get('question', '').strip()
+            predicted = row.get('model_answer', '').strip()
+            ground_truth = row.get('ground_truth', '').strip()
+            task = row.get('task', 'unknown')
+            qa_type = row.get('qa_type', 'unknown')
+            scores = self.evaluate_answer(question, ground_truth, predicted, task, qa_type)
+            return idx, {
+                'image_id': row.get('image_id', ''),
+                'qa_id': row.get('qa_id', ''),
+                'task': task,
+                'qa_type': qa_type,
+                'question': question,
+                'ground_truth': ground_truth,
+                'predicted': predicted,
+                'score': scores['score'],
+                'overall': scores['overall']
+            }
+
+        # Judge all rows concurrently (each call is an independent text-only request),
+        # then reassemble in original row order for deterministic output.
+        indexed_results = {}
+        done = 0
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = [executor.submit(judge_row, (i, r)) for i, r in enumerate(rows)]
+            for future in as_completed(futures):
+                idx, result = future.result()
+                indexed_results[idx] = result
+                done += 1
+                if done % 20 == 0 or done == total_rows:
+                    print(f"  Progress: {done}/{total_rows} ({100*done/total_rows:.1f}%)")
+
+        for i in range(len(rows)):
+            result = indexed_results[i]
+            results.append(result)
+            task_stats[result['task']]['total'] += 1
+            task_stats[result['task']]['scores'].append(result['overall'])
+            qa_type_stats[result['qa_type']]['total'] += 1
+            qa_type_stats[result['qa_type']]['scores'].append(result['overall'])
         
         # Compute aggregate statistics
         if results:

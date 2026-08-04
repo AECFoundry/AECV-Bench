@@ -1,0 +1,13 @@
+{
+  "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+  "qa_tasks_total": 192,
+  "errors": 34,
+  "wall_clock_s": 841.9,
+  "max_workers": 20,
+  "total_cost_usd": 0.0,
+  "total_prompt_tokens": 412856,
+  "total_completion_tokens": 1630999,
+  "mean_latency_s": 68.62,
+  "median_latency_s": 27.97,
+  "max_latency_s": 417.4
+}

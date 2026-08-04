@@ -1,0 +1,13 @@
+{
+  "model": "x-ai/grok-4.3",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 335.9,
+  "max_workers": 20,
+  "total_cost_usd": 0.7731,
+  "total_prompt_tokens": 394736,
+  "total_completion_tokens": 111846,
+  "mean_latency_s": 33.94,
+  "median_latency_s": 26.43,
+  "max_latency_s": 103.34
+}

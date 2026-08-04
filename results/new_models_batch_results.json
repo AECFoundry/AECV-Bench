@@ -1,0 +1,332 @@
+{
+  "Claude Opus 4.7": {
+    "model_id": "anthropic/claude-opus-4.7",
+    "object_counting": {
+      "accuracy": 0.4283,
+      "cost_usd": 2.3405,
+      "wall_clock_s": 96.4,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 14.88
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 3.4037,
+      "mean_latency_s": 34.0,
+      "wall_clock_s": 336.4
+    },
+    "judge": {
+      "score": 0.8542,
+      "by_type": {
+        "comparison_qa": 0.8409,
+        "counting_qa": 0.7619,
+        "ocr_qa": 0.9538,
+        "spatial_qa": 0.8049
+      },
+      "wall_clock_s": 11.2
+    },
+    "done": true,
+    "total_cost_usd": 5.7442
+  },
+  "Claude Fable 5": {
+    "model_id": "anthropic/claude-fable-5",
+    "object_counting": {
+      "accuracy": 0.515,
+      "cost_usd": 9.2234,
+      "wall_clock_s": 185.4,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 28.95
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 7.5071,
+      "mean_latency_s": 36.3,
+      "wall_clock_s": 360.6
+    },
+    "judge": {
+      "score": 0.901,
+      "by_type": {
+        "comparison_qa": 0.9318,
+        "counting_qa": 0.8095,
+        "ocr_qa": 0.9692,
+        "spatial_qa": 0.8537
+      },
+      "wall_clock_s": 13.6
+    },
+    "done": true,
+    "total_cost_usd": 16.7305
+  },
+  "OpenAI GPT-5.5": {
+    "model_id": "openai/gpt-5.5",
+    "object_counting": {
+      "accuracy": 0.4833,
+      "cost_usd": 26.8781,
+      "wall_clock_s": 1195.4,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 182.09
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 7.3577,
+      "mean_latency_s": 36.8,
+      "wall_clock_s": 416.5
+    },
+    "judge": {
+      "score": 0.8698,
+      "by_type": {
+        "comparison_qa": 0.8636,
+        "counting_qa": 0.8333,
+        "ocr_qa": 0.9385,
+        "spatial_qa": 0.8049
+      },
+      "wall_clock_s": 12.5
+    },
+    "done": true,
+    "total_cost_usd": 34.2358
+  },
+  "Gemini 3.5 Flash": {
+    "model_id": "google/gemini-3.5-flash",
+    "object_counting": {
+      "accuracy": 0.5433,
+      "cost_usd": 3.7683,
+      "wall_clock_s": 389.7,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 28.25
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 1.2354,
+      "mean_latency_s": 31.59,
+      "wall_clock_s": 322.0
+    },
+    "judge": {
+      "score": 0.8854,
+      "by_type": {
+        "comparison_qa": 0.9545,
+        "counting_qa": 0.6667,
+        "ocr_qa": 0.9846,
+        "spatial_qa": 0.878
+      },
+      "wall_clock_s": 16.1
+    },
+    "done": true,
+    "total_cost_usd": 5.0037
+  },
+  "Grok 4.3": {
+    "model_id": "x-ai/grok-4.3",
+    "object_counting": {
+      "accuracy": 0.3583,
+      "cost_usd": 0.6979,
+      "wall_clock_s": 113.3,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 17.51
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 0.7731,
+      "mean_latency_s": 33.94,
+      "wall_clock_s": 335.9
+    },
+    "judge": {
+      "score": 0.7188,
+      "by_type": {
+        "comparison_qa": 0.7045,
+        "counting_qa": 0.5476,
+        "ocr_qa": 0.8615,
+        "spatial_qa": 0.6829
+      },
+      "wall_clock_s": 12.6
+    },
+    "done": true,
+    "total_cost_usd": 1.471
+  },
+  "MiniMax M3": {
+    "model_id": "minimax/minimax-m3",
+    "object_counting": {
+      "accuracy": 0.4733,
+      "cost_usd": 0.9668,
+      "wall_clock_s": 880.7,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 114.7
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 0.2236,
+      "mean_latency_s": 36.63,
+      "wall_clock_s": 364.6
+    },
+    "judge": {
+      "score": 0.7552,
+      "by_type": {
+        "comparison_qa": 0.75,
+        "counting_qa": 0.5952,
+        "ocr_qa": 0.8769,
+        "spatial_qa": 0.7317
+      },
+      "wall_clock_s": 13.2
+    },
+    "done": true,
+    "total_cost_usd": 1.1904
+  },
+  "Qwen 3.7 Plus": {
+    "model_id": "qwen/qwen3.7-plus",
+    "object_counting": {
+      "accuracy": 0.46,
+      "cost_usd": 0.1222,
+      "wall_clock_s": 96.6,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 14.67
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 0.7964,
+      "mean_latency_s": 52.29,
+      "wall_clock_s": 609.8
+    },
+    "judge": {
+      "score": 0.8177,
+      "by_type": {
+        "comparison_qa": 0.7955,
+        "counting_qa": 0.7143,
+        "ocr_qa": 0.9077,
+        "spatial_qa": 0.8049
+      },
+      "wall_clock_s": 9.3
+    },
+    "done": true,
+    "total_cost_usd": 0.9186
+  },
+  "Gemma 4 31B IT": {
+    "model_id": "google/gemma-4-31b-it",
+    "object_counting": {
+      "accuracy": 0.4117,
+      "cost_usd": 0.017,
+      "wall_clock_s": 344.0,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 26.03
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 0.0079,
+      "mean_latency_s": 33.18,
+      "wall_clock_s": 328.7
+    },
+    "judge": {
+      "score": 0.5312,
+      "by_type": {
+        "comparison_qa": 0.5,
+        "counting_qa": 0.4048,
+        "ocr_qa": 0.6462,
+        "spatial_qa": 0.5122
+      },
+      "wall_clock_s": 14.5
+    },
+    "done": true,
+    "total_cost_usd": 0.0249
+  },
+  "StepFun Step 3.7 Flash": {
+    "model_id": "stepfun/step-3.7-flash",
+    "object_counting": {
+      "accuracy": 0.415,
+      "cost_usd": 1.2664,
+      "wall_clock_s": 780.6,
+      "succeeded": 120,
+      "total": 120,
+      "mean_latency_s": 116.6
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 2.4454,
+      "mean_latency_s": 119.24,
+      "wall_clock_s": 1486.8
+    },
+    "judge": {
+      "score": 0.6927,
+      "by_type": {
+        "comparison_qa": 0.6364,
+        "counting_qa": 0.5476,
+        "ocr_qa": 0.9231,
+        "spatial_qa": 0.5366
+      },
+      "wall_clock_s": 15.7
+    },
+    "done": true,
+    "total_cost_usd": 3.7118
+  },
+  "NVIDIA Nemotron 3 Nano Omni 30B": {
+    "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "object_counting": {
+      "accuracy": null,
+      "cost_usd": 0.0,
+      "wall_clock_s": 1672.7,
+      "succeeded": 26,
+      "total": 120,
+      "mean_latency_s": 65.0
+    },
+    "qa": {
+      "total": 192,
+      "errors": 7,
+      "cost_usd": 0.0,
+      "mean_latency_s": 70.45,
+      "wall_clock_s": 1199.2
+    },
+    "judge": {
+      "score": 0.5729,
+      "by_type": {
+        "comparison_qa": 0.4773,
+        "counting_qa": 0.4762,
+        "ocr_qa": 0.7692,
+        "spatial_qa": 0.4634
+      },
+      "wall_clock_s": 13.7
+    },
+    "done": true,
+    "total_cost_usd": 0
+  },
+  "Kimi K2.6": {
+    "model_id": "moonshotai/kimi-k2.6",
+    "object_counting": {
+      "accuracy": 0.444,
+      "cost_usd": 8.7562,
+      "wall_clock_s": 1441.3,
+      "succeeded": 109,
+      "total": 120,
+      "mean_latency_s": 434.29
+    },
+    "qa": {
+      "total": 192,
+      "errors": 0,
+      "cost_usd": 2.6256,
+      "mean_latency_s": 112.79,
+      "wall_clock_s": 1946.2
+    },
+    "judge": {
+      "score": 0.7917,
+      "by_type": {
+        "comparison_qa": 0.75,
+        "counting_qa": 0.6905,
+        "ocr_qa": 0.9385,
+        "spatial_qa": 0.7073
+      },
+      "wall_clock_s": 14.4
+    },
+    "done": true,
+    "total_cost_usd": 11.3818
+  }
+}

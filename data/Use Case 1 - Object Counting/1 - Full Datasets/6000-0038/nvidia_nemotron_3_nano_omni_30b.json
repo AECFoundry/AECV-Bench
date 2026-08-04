@@ -1,0 +1,40 @@
+{
+  "description": "Schema for floor plan element counts.",
+  "properties": {
+    "Door": {
+      "description": "TOTAL number of doors (all types)",
+      "title": "Door",
+      "type": "integer"
+    },
+    "Window": {
+      "description": "TOTAL number of windows (all types)",
+      "title": "Window",
+      "type": "integer"
+    },
+    "Space": {
+      "description": "TOTAL count of distinct spaces/rooms \u2014 include every enclosed area, large or small, habitable or not (bedrooms, closets, terrace, WC, storage, halls, etc.).",
+      "title": "Space",
+      "type": "integer"
+    },
+    "Bedroom": {
+      "description": "TOTAL number of bedrooms",
+      "title": "Bedroom",
+      "type": "integer"
+    },
+    "Toilet": {
+      "description": "TOTAL number of toilets/WCs",
+      "title": "Toilet",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "Door",
+    "Window",
+    "Space",
+    "Bedroom",
+    "Toilet"
+  ],
+  "title": "PlanElements",
+  "type": "object",
+  "additionalProperties": false
+}

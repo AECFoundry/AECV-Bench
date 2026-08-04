@@ -1,0 +1,10 @@
+{
+  "description": "Schema for floor plan element counts.",
+  "properties": {
+    "Door": 14,
+    "Window": 6,
+    "Space": 26,
+    "Bedroom": 4,
+    "Toilet": 2
+  }
+}

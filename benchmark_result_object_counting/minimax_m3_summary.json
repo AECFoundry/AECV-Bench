@@ -1,0 +1,13 @@
+{
+  "model": "minimax/minimax-m3",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 880.7,
+  "max_workers": 20,
+  "total_cost_usd": 0.9668,
+  "total_prompt_tokens": 359522,
+  "total_completion_tokens": 715767,
+  "mean_latency_s": 114.7,
+  "median_latency_s": 91.89,
+  "max_latency_s": 381.88
+}
