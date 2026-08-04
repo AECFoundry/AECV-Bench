@@ -5,10 +5,13 @@ import csv
 import json
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
+from statistics import mean as _mean, median as _median
 from typing import Callable, Dict, Optional, List, Any
 from ..analyzers.openrouter import analyze_floorplan
 from ..models.plan_elements import get_json_schema
+from ..utils.pricing import compute_cost
 
 
 @dataclass
@@ -18,6 +21,7 @@ class BenchmarkConfig:
     output_csv: str
     output_json_name: str
     num_folders: int
+    max_workers: int = 35
 
 
 @dataclass 
@@ -135,8 +139,13 @@ class DatasetScanner:
 class AnalyzerRunner:
     """Handles running analysis on images using configured analyzer."""
     
-    def run_analysis(self, image_path: str, model_config: ModelConfig, analyzer_config: AnalyzerConfig) -> Dict:
-        """Run analysis on image and return results."""
+    def run_analysis(self, image_path: str, model_config: ModelConfig, analyzer_config: AnalyzerConfig,
+                     usage_out: Optional[Dict] = None) -> Dict:
+        """Run analysis on image and return results.
+
+        If ``usage_out`` is provided and the analyzer is an OpenRouter analyzer,
+        it is passed through so the caller receives token usage.
+        """
         if analyzer_config.analyzer_func == analyze_floorplan:
             # Default analyzer with standard parameters
             return analyzer_config.analyzer_func(
@@ -145,11 +154,16 @@ class AnalyzerRunner:
                 json_schema=model_config.json_schema,
                 open_router_api_key=analyzer_config.open_router_api_key,
                 url=analyzer_config.url,
-                temperature=model_config.temperature
+                temperature=model_config.temperature,
+                usage_out=usage_out,
             )
         else:
             # Custom analyzer - build parameters dynamically
             kwargs = self._build_analyzer_kwargs(image_path, model_config, analyzer_config)
+            # Only OpenRouter analyzers accept usage_out (cohere/replicate do not)
+            is_openrouter = not ("cohere_api_key" in kwargs or "replicate_api_token" in kwargs)
+            if usage_out is not None and is_openrouter:
+                kwargs["usage_out"] = usage_out
             return analyzer_config.analyzer_func(**kwargs)
     
     def _build_analyzer_kwargs(self, image_path: str, model_config: ModelConfig, analyzer_config: AnalyzerConfig) -> Dict[str, Any]:
@@ -200,24 +214,34 @@ class ResultAggregator:
             print(f"[ERROR] Could not read metadata.json for '{folder_info.name}': {e}")
             return None
     
-    def create_csv_row(self, folder_info: FolderInfo, original_data: Dict, extracted_data: Dict) -> Optional[Dict]:
-        """Create a CSV row from folder data."""
+    def create_csv_row(self, folder_info: FolderInfo, original_data: Dict, extracted_data: Dict,
+                       metrics: Optional[Dict] = None) -> Optional[Dict]:
+        """Create a CSV row from folder data, including per-call cost/latency metrics."""
         try:
+            metrics = metrics or {}
             return {
                 "name": folder_info.name,
                 "original": json.dumps(original_data, separators=(",", ":")),
-                "extracted": json.dumps(extracted_data, separators=(",", ":"))
+                "extracted": json.dumps(extracted_data, separators=(",", ":")),
+                "prompt_tokens": metrics.get("prompt_tokens"),
+                "completion_tokens": metrics.get("completion_tokens"),
+                "cost_usd": metrics.get("cost_usd"),
+                "latency_s": metrics.get("latency_s"),
             }
         except Exception as e:
             print(f"[ERROR] Could not prepare CSV row for '{folder_info.name}': {e}")
             return None
-    
+
+    # Columns appended after the original metrics-free schema, so the evaluator
+    # (which reads by column name) keeps working unchanged.
+    CSV_FIELDNAMES = ["name", "original", "extracted",
+                      "prompt_tokens", "completion_tokens", "cost_usd", "latency_s"]
+
     def write_csv(self, rows: List[Dict], output_csv: str) -> bool:
         """Write results to CSV file."""
         try:
             with open(output_csv, "w", newline="", encoding="utf-8") as csvfile:
-                fieldnames = ["name", "original", "extracted"]
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer = csv.DictWriter(csvfile, fieldnames=self.CSV_FIELDNAMES)
                 writer.writeheader()
                 for row in rows:
                     writer.writerow(row)
@@ -255,55 +279,105 @@ class BenchmarkProcessor:
             print("[ERROR] No valid folders found to process")
             return False
         
-        print(f"Found {len(folders)} valid folders to process")
-        
-        # Step 2: Process each folder
-        csv_rows = []
-        processed_count = 0
-        
-        for i, folder_info in enumerate(folders, 1):
-            success = self._process_single_folder(
-                folder_info, model_config, analyzer_config, csv_rows, i, len(folders)
-            )
-            if success:
-                processed_count += 1
-            
-            # Rate limiting
-            if i < len(folders):
-                time.sleep(0.5)
-        
-        # Step 3: Write CSV results
+        total = len(folders)
+        print(f"Found {total} valid folders to process")
+        print(f"Running with up to {self.config.max_workers} concurrent requests")
+
+        # Step 2: Process folders concurrently (each call is an independent I/O-bound request)
+        wall_start = time.time()
+        csv_rows: List[Dict] = []
+        done = 0
+        with ThreadPoolExecutor(max_workers=self.config.max_workers) as executor:
+            future_to_folder = {
+                executor.submit(
+                    self._process_single_folder, folder_info, model_config, analyzer_config
+                ): folder_info
+                for folder_info in folders
+            }
+            for future in as_completed(future_to_folder):
+                done += 1
+                row = future.result()
+                if row is not None:
+                    csv_rows.append(row)
+                    print(f"[DONE {done}/{total}] '{row['name']}' "
+                          f"in {row.get('latency_s')}s\n", flush=True)
+
+        wall_elapsed = time.time() - wall_start
+        processed_count = len(csv_rows)
+
+        # Keep deterministic output ordering despite out-of-order completion
+        csv_rows.sort(key=lambda r: r["name"])
+
+        # Step 3: Write CSV results + run summary
         if csv_rows:
             success = self.result_aggregator.write_csv(csv_rows, self.config.output_csv)
             if success:
-                print(f"[SUCCESS] Completed. CSV saved to '{self.config.output_csv}'. Processed {processed_count}/{len(folders)} folders.")
+                self._write_run_summary(csv_rows, model_config, wall_elapsed, total)
+                print(f"[SUCCESS] Completed. CSV saved to '{self.config.output_csv}'. "
+                      f"Processed {processed_count}/{total} folders in {wall_elapsed:.1f}s wall-clock.")
                 return True
-        
-        print(f"[WARNING] Processing completed but no results to save. Processed {processed_count}/{len(folders)} folders.")
+
+        print(f"[WARNING] Processing completed but no results to save. Processed {processed_count}/{total} folders.")
         return False
-    
+
+    def _write_run_summary(self, csv_rows: List[Dict], model_config: ModelConfig,
+                           wall_elapsed: float, total: int) -> None:
+        """Aggregate per-call metrics into a run summary (printed + saved as JSON)."""
+        latencies = [r["latency_s"] for r in csv_rows if r.get("latency_s") is not None]
+        costs = [r["cost_usd"] for r in csv_rows if r.get("cost_usd") is not None]
+        ptoks = [r["prompt_tokens"] for r in csv_rows if r.get("prompt_tokens") is not None]
+        ctoks = [r["completion_tokens"] for r in csv_rows if r.get("completion_tokens") is not None]
+
+        summary = {
+            "model": model_config.model_name,
+            "folders_total": total,
+            "folders_succeeded": len(csv_rows),
+            "wall_clock_s": round(wall_elapsed, 1),
+            "max_workers": self.config.max_workers,
+            "total_cost_usd": round(sum(costs), 4) if costs else None,
+            "total_prompt_tokens": sum(ptoks) if ptoks else None,
+            "total_completion_tokens": sum(ctoks) if ctoks else None,
+            "mean_latency_s": round(_mean(latencies), 2) if latencies else None,
+            "median_latency_s": round(_median(latencies), 2) if latencies else None,
+            "max_latency_s": round(max(latencies), 2) if latencies else None,
+        }
+        summary_path = os.path.splitext(self.config.output_csv)[0] + "_summary.json"
+        try:
+            with open(summary_path, "w", encoding="utf-8") as f:
+                json.dump(summary, f, indent=2)
+        except Exception as e:
+            print(f"[WARN] Could not write summary JSON: {e}")
+
+        cost_str = f"${summary['total_cost_usd']:.4f}" if summary["total_cost_usd"] is not None else "n/a (unpriced)"
+        print("\n  --- Run summary ---")
+        print(f"  Cost: {cost_str}   Tokens: {summary['total_prompt_tokens']} in / {summary['total_completion_tokens']} out")
+        print(f"  Latency/call: mean {summary['mean_latency_s']}s, median {summary['median_latency_s']}s, max {summary['max_latency_s']}s")
+        print(f"  Wall-clock: {summary['wall_clock_s']}s for {len(csv_rows)}/{total} folders")
+
     def _process_single_folder(
-        self, 
-        folder_info: FolderInfo, 
-        model_config: ModelConfig, 
-        analyzer_config: AnalyzerConfig, 
-        csv_rows: List[Dict],
-        current: int,
-        total: int
-    ) -> bool:
-        """Process a single folder and add result to csv_rows if successful."""
-        start_ts = time.time()
+        self,
+        folder_info: FolderInfo,
+        model_config: ModelConfig,
+        analyzer_config: AnalyzerConfig,
+    ) -> Optional[Dict]:
+        """Process a single folder; return its CSV row (with metrics) or None on failure.
+
+        Thread-safe: returns a value rather than mutating shared state, so it can
+        run inside a ThreadPoolExecutor.
+        """
         print(
-            f"[START] {current}/{total}: '{folder_info.name}' "
-            f"(image='{os.path.basename(folder_info.image_path)}', metadata='{os.path.basename(folder_info.metadata_path)}')",
+            f"[START] '{folder_info.name}' "
+            f"(image='{os.path.basename(folder_info.image_path)}')",
             flush=True,
         )
+        usage: Dict = {}
+        start_ts = time.time()
         # Step 1: Run analysis
         try:
             result = self.analyzer_runner.run_analysis(
-                folder_info.image_path, model_config, analyzer_config
+                folder_info.image_path, model_config, analyzer_config, usage_out=usage
             )
-            
+
             # Parse JSON string if needed
             if isinstance(result, str):
                 if not result.strip():
@@ -312,28 +386,32 @@ class BenchmarkProcessor:
                     result = json.loads(result)
                 except json.JSONDecodeError as json_err:
                     raise ValueError(f"Invalid JSON response: {json_err}. Response preview: {result[:200]}")
-                    
+
         except Exception as e:
             print(f"[ERROR] Analysis failed for '{folder_info.name}': {e}")
-            return False
-        
+            return None
+
+        latency_s = round(time.time() - start_ts, 2)
+
         # Step 2: Save folder result
         if not self.result_aggregator.save_folder_result(folder_info, result):
-            return False
-        
-        # Step 3: Load metadata and create CSV row
+            return None
+
+        # Step 3: Load metadata and create CSV row with metrics
         original_data = self.result_aggregator.load_folder_metadata(folder_info)
         if original_data is None:
-            return False
-        
-        csv_row = self.result_aggregator.create_csv_row(folder_info, original_data, result)
-        if csv_row is None:
-            return False
-        
-        csv_rows.append(csv_row)
-        duration = time.time() - start_ts
-        print(f"[DONE] {current}/{total}: '{folder_info.name}' in {duration:.1f}s\n", flush=True)
-        return True
+            return None
+
+        has_usage = usage.get("prompt_tokens") is not None or usage.get("completion_tokens") is not None
+        cost = compute_cost(model_config.model_name,
+                            usage.get("prompt_tokens"), usage.get("completion_tokens")) if has_usage else None
+        metrics = {
+            "prompt_tokens": usage.get("prompt_tokens"),
+            "completion_tokens": usage.get("completion_tokens"),
+            "cost_usd": round(cost, 6) if cost is not None else None,
+            "latency_s": latency_s,
+        }
+        return self.result_aggregator.create_csv_row(folder_info, original_data, result, metrics)
 
 
 def process_benchmark_floorplans(
@@ -347,6 +425,7 @@ def process_benchmark_floorplans(
     url: str = "https://openrouter.ai/api/v1/chat/completions",
     temperature: float = 0.0,
     analyzer_func: Optional[Callable] = None,
+    max_workers: int = 35,
     **analyzer_kwargs
 ):
     """
@@ -373,7 +452,8 @@ def process_benchmark_floorplans(
         benchmark_dir=benchmark_dir,
         output_csv=output_csv,
         output_json_name=output_json_name,
-        num_folders=num_folders
+        num_folders=num_folders,
+        max_workers=max_workers
     )
     
     model_config = ModelConfig(

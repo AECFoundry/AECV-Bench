@@ -35,7 +35,7 @@ class OpenRouterAnalyzer:
         self.use_schema_format = use_schema_format
         self.max_retries = 3
         self.retry_delay = 2
-        self.timeout = 60
+        self.timeout = 120
 
     def _validate_inputs(self, image_path: str, model_name: str, open_router_api_key: Optional[str], json_schema: Optional[Dict]):
         """Validate input parameters."""
@@ -199,36 +199,48 @@ class OpenRouterAnalyzer:
         open_router_api_key: str = None,
         url: str = "https://openrouter.ai/api/v1/chat/completions",
         temperature: float = 0.0,
+        usage_out: Optional[Dict] = None,
     ) -> Union[str, Dict]:
         """
         Analyze floor plan image using OpenRouter API.
-        
+
         This is the main method that coordinates all steps of the analysis process.
+
+        If ``usage_out`` (a mutable dict) is provided, it is populated with the
+        token usage reported by the API: ``prompt_tokens``, ``completion_tokens``,
+        ``total_tokens``.
         """
         # Step 1: Validate inputs
         validated_schema = self._validate_inputs(image_path, model_name, open_router_api_key, json_schema)
-        
+
         # Step 2: Prepare image
         base64_image = encode_image_to_base64(image_path)
         from ..utils.image_utils import get_image_mime_type
         mime_type = get_image_mime_type(image_path)
         data_url = f"data:{mime_type};base64,{base64_image}"
-        
+
         # Step 3: Prepare headers
         headers = self._prepare_headers(open_router_api_key)
-        
+
         # Step 4: Build prompt
         prompt_text = self._build_prompt(validated_schema)
-        
+
         # Step 5: Build payload
         payload = self._build_payload(model_name, prompt_text, data_url, temperature, validated_schema)
-        
+
         # Step 6: Make request with retries
         resp_json = self._make_request_with_retry(url, headers, payload, image_path)
-        
+
+        # Step 6b: Capture token usage if requested
+        if usage_out is not None:
+            usage = resp_json.get("usage", {}) or {}
+            usage_out["prompt_tokens"] = usage.get("prompt_tokens")
+            usage_out["completion_tokens"] = usage.get("completion_tokens")
+            usage_out["total_tokens"] = usage.get("total_tokens")
+
         # Step 7: Extract content
         content = self._extract_content_from_response(resp_json, image_path)
-        
+
         # Step 8: Process response
         return self._process_response(content, image_path)
 
@@ -245,6 +257,7 @@ def analyze_floorplan(
     open_router_api_key: str = None,
     url: str = "https://openrouter.ai/api/v1/chat/completions",
     temperature: float = 0.0,
+    usage_out: Optional[Dict] = None,
 ) -> Union[str, Dict]:
     """
     Sends a floor-plan image to the OpenRouter chat-completions endpoint and returns the JSON response.
@@ -256,6 +269,7 @@ def analyze_floorplan(
     - open_router_api_key: Your OpenRouter API key (Bearer token).
     - url: The endpoint URL (default is OpenRouter chat-completions).
     - temperature: Sampling temperature (default 0.0 for deterministic).
+    - usage_out: Optional mutable dict populated with token usage from the response.
 
     Returns:
     - The parsed JSON content from the API response (the "content" field under choices[0].message).
@@ -270,7 +284,8 @@ def analyze_floorplan(
         json_schema=json_schema,
         open_router_api_key=open_router_api_key,
         url=url,
-        temperature=temperature
+        temperature=temperature,
+        usage_out=usage_out,
     )
 
 
@@ -281,6 +296,7 @@ def analyze_floorplan_prompt_based(
     open_router_api_key: str = None,
     url: str = "https://openrouter.ai/api/v1/chat/completions",
     temperature: float = 0.0,
+    usage_out: Optional[Dict] = None,
 ) -> Union[str, Dict]:
     """
     Sends a floor-plan image to the OpenRouter chat-completions endpoint.
@@ -295,6 +311,7 @@ def analyze_floorplan_prompt_based(
     - open_router_api_key: Your OpenRouter API key (Bearer token).
     - url: The endpoint URL (default is OpenRouter chat-completions).
     - temperature: Sampling temperature (default 0.0 for deterministic).
+    - usage_out: Optional mutable dict populated with token usage from the response.
 
     Returns:
     - The parsed JSON content from the API response.
@@ -309,6 +326,7 @@ def analyze_floorplan_prompt_based(
         json_schema=json_schema,
         open_router_api_key=open_router_api_key,
         url=url,
-        temperature=temperature
+        temperature=temperature,
+        usage_out=usage_out,
     )
 

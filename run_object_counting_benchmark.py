@@ -8,7 +8,7 @@ IMPORTANT: Only models that support vision/image input can be used here.
 """
 import os
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Iterable
 from src.benchmark.processor import process_benchmark_floorplans
 from src.analyzers.openrouter import analyze_floorplan, analyze_floorplan_prompt_based
 from src.analyzers.cohere import analyze_floorplan_cohere
@@ -138,7 +138,7 @@ class ModelRegistry:
                 analyzer=analyze_floorplan,
                 provider="openrouter",
                 note="OpenAI GPT-5.4 model",
-                enabled=True
+                enabled=False
             ),
             ModelConfig(
                 name="Amazon Nova 2 Lite v1",
@@ -218,6 +218,106 @@ class ModelRegistry:
             ),
 
             # =================================================================
+            # NEW FRONTIER MODELS (added 2026-06, released since ~March 2026)
+            # =================================================================
+            ModelConfig(
+                name="Claude Opus 4.8",
+                model_id="anthropic/claude-opus-4.8",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="Anthropic Claude Opus 4.8 - latest Opus flagship",
+                enabled=True
+            ),
+            ModelConfig(
+                name="Claude Opus 4.7",
+                model_id="anthropic/claude-opus-4.7",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="Anthropic Claude Opus 4.7",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Claude Fable 5",
+                model_id="anthropic/claude-fable-5",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="Anthropic Claude Fable 5",
+                enabled=False
+            ),
+            ModelConfig(
+                name="OpenAI GPT-5.5",
+                model_id="openai/gpt-5.5",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="OpenAI GPT-5.5 (practical frontier; pro variant excluded - too slow/expensive)",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Gemini 3.5 Flash",
+                model_id="google/gemini-3.5-flash",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="Google Gemini 3.5 Flash - newest Gemini vision on OpenRouter",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Grok 4.3",
+                model_id="x-ai/grok-4.3",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="xAI Grok 4.3 - latest stable Grok",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Kimi K2.6",
+                model_id="moonshotai/kimi-k2.6",
+                analyzer=analyze_floorplan_prompt_based,
+                provider="openrouter",
+                note="Moonshot Kimi K2.6 - latest Kimi (prompt-based JSON)",
+                enabled=False
+            ),
+            ModelConfig(
+                name="MiniMax M3",
+                model_id="minimax/minimax-m3",
+                analyzer=analyze_floorplan_prompt_based,
+                provider="openrouter",
+                note="MiniMax M3 - latest MiniMax (prompt-based JSON)",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Qwen 3.7 Plus",
+                model_id="qwen/qwen3.7-plus",
+                analyzer=analyze_floorplan,
+                provider="openrouter",
+                note="Qwen 3.7 Plus - newest Qwen vision",
+                enabled=False
+            ),
+            ModelConfig(
+                name="Gemma 4 31B IT",
+                model_id="google/gemma-4-31b-it",
+                analyzer=analyze_floorplan_prompt_based,
+                provider="openrouter",
+                note="Google Gemma 4 31B - open-weight (prompt-based JSON)",
+                enabled=False
+            ),
+            ModelConfig(
+                name="StepFun Step 3.7 Flash",
+                model_id="stepfun/step-3.7-flash",
+                analyzer=analyze_floorplan_prompt_based,
+                provider="openrouter",
+                note="StepFun Step 3.7 Flash - open VLM (prompt-based JSON)",
+                enabled=False
+            ),
+            ModelConfig(
+                name="NVIDIA Nemotron 3 Nano Omni 30B",
+                model_id="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                analyzer=analyze_floorplan_prompt_based,
+                provider="openrouter",
+                note="NVIDIA frontier VISION model on OpenRouter (Nemotron 3 Ultra is text-only)",
+                enabled=False
+            ),
+
+            # =================================================================
             # COHERE MODELS
             # =================================================================
             ModelConfig(
@@ -271,16 +371,29 @@ class ModelRegistry:
 class BenchmarkRunner:
     """Handles running vision model benchmarks with proper separation of concerns."""
 
-    def __init__(self, benchmark_dir: str, output_dir: str, num_folders: int):
+    # Maps a provider to its (env var name, display name) for key loading.
+    PROVIDER_KEY_ENV = {
+        'openrouter': ('OPEN_ROUTER_API_KEY', 'OpenRouter'),
+        'cohere': ('COHERE_API_KEY', 'Cohere'),
+        'replicate': ('REPLICATE_API_TOKEN', 'Replicate'),
+    }
+
+    def __init__(self, benchmark_dir: str, output_dir: str, num_folders: int,
+                 required_providers: Optional[Iterable[str]] = None,
+                 max_workers: int = 35):
         self.benchmark_dir = benchmark_dir
         self.output_dir = output_dir
         self.num_folders = num_folders
+        self.max_workers = max_workers
 
-        # Load API keys for all providers
+        # Load API keys only for the providers actually used by enabled models.
+        # If required_providers is None, fall back to loading all providers.
+        providers = set(required_providers) if required_providers is not None \
+            else set(self.PROVIDER_KEY_ENV)
         self.api_keys = {
-            'openrouter': require_api_key('OPEN_ROUTER_API_KEY', 'OpenRouter'),
-            'cohere': require_api_key('COHERE_API_KEY', 'Cohere'),
-            'replicate': require_api_key('REPLICATE_API_TOKEN', 'Replicate')
+            provider: require_api_key(*self.PROVIDER_KEY_ENV[provider])
+            for provider in providers
+            if provider in self.PROVIDER_KEY_ENV
         }
 
         os.makedirs(output_dir, exist_ok=True)
@@ -311,6 +424,7 @@ class BenchmarkRunner:
             "model_name": model_config.model_id,
             "json_schema": get_json_schema(),
             "analyzer_func": model_config.analyzer,
+            "max_workers": self.max_workers,
         }
 
         # Add provider-specific parameters
@@ -398,14 +512,14 @@ def main():
     """Main execution function."""
     # Configuration
     benchmark_dir = r"data/Use Case 1 - Object Counting/1 - Full Datasets"
-    output_dir = "benchmark_result_object_counting"
-    num_folders = 120  # Running on all folders
+    # Overridable via env for quick tests; defaults run the full benchmark.
+    output_dir = os.getenv("BENCH_OUTPUT_DIR", "benchmark_result_object_counting")
+    num_folders = int(os.getenv("BENCH_NUM_FOLDERS", "120"))
+    max_workers = int(os.getenv("BENCH_MAX_WORKERS", "35"))
 
-    # Initialize model registry and runner
+    # Initialize model registry and get enabled models first, so we only
+    # require API keys for the providers those models actually use.
     model_registry = ModelRegistry()
-    benchmark_runner = BenchmarkRunner(benchmark_dir, output_dir, num_folders)
-
-    # Get enabled models
     enabled_models = model_registry.get_enabled_models()
 
     if not enabled_models:
@@ -415,16 +529,25 @@ def main():
         model_registry.list_models()
         return
 
+    required_providers = {model.provider for model in enabled_models}
+    benchmark_runner = BenchmarkRunner(
+        benchmark_dir, output_dir, num_folders,
+        required_providers=required_providers,
+        max_workers=max_workers,
+    )
+
     # Run benchmark
     results = benchmark_runner.run_benchmark(enabled_models)
 
     # Print results summary
     print_results_summary(results)
 
-    # Generate visualization
-    generate_visualization(results)
-
-    print("\n[SUCCESS] All done! Check 'results/' folder for visualizations.")
+    # Generate visualization (skippable for quick tests)
+    if os.getenv("BENCH_SKIP_VIZ") == "1":
+        print("\n[INFO] BENCH_SKIP_VIZ=1 set - skipping visualization.")
+    else:
+        generate_visualization(results)
+        print("\n[SUCCESS] All done! Check 'results/' folder for visualizations.")
 
 
 if __name__ == "__main__":

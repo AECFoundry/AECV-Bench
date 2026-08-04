@@ -1,0 +1,13 @@
+{
+  "model": "stepfun/step-3.7-flash",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 1486.7,
+  "max_workers": 20,
+  "total_cost_usd": 2.4454,
+  "total_prompt_tokens": 314195,
+  "total_completion_tokens": 2071775,
+  "mean_latency_s": 119.24,
+  "median_latency_s": 31.28,
+  "max_latency_s": 733.59
+}

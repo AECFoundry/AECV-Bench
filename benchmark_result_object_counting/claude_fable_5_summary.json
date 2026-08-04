@@ -1,0 +1,13 @@
+{
+  "model": "anthropic/claude-fable-5",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 185.4,
+  "max_workers": 20,
+  "total_cost_usd": 9.2234,
+  "total_prompt_tokens": 443393,
+  "total_completion_tokens": 95790,
+  "mean_latency_s": 28.95,
+  "median_latency_s": 28.5,
+  "max_latency_s": 69.35
+}

@@ -1,0 +1,13 @@
+{
+  "model": "qwen/qwen3.7-plus",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 609.8,
+  "max_workers": 20,
+  "total_cost_usd": 0.7964,
+  "total_prompt_tokens": 382850,
+  "total_completion_tokens": 402032,
+  "mean_latency_s": 52.29,
+  "median_latency_s": 38.94,
+  "max_latency_s": 268.47
+}

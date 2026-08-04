@@ -1,0 +1,13 @@
+{
+  "model": "google/gemini-3.5-flash",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 389.7,
+  "max_workers": 20,
+  "total_cost_usd": 3.7683,
+  "total_prompt_tokens": 212250,
+  "total_completion_tokens": 383323,
+  "mean_latency_s": 28.25,
+  "median_latency_s": 19.42,
+  "max_latency_s": 254.27
+}

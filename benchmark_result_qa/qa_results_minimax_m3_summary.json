@@ -1,0 +1,13 @@
+{
+  "model": "minimax/minimax-m3",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 364.6,
+  "max_workers": 20,
+  "total_cost_usd": 0.2236,
+  "total_prompt_tokens": 585238,
+  "total_completion_tokens": 40017,
+  "mean_latency_s": 36.63,
+  "median_latency_s": 28.99,
+  "max_latency_s": 217.58
+}

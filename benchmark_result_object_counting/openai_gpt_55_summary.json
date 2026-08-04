@@ -1,0 +1,13 @@
+{
+  "model": "openai/gpt-5.5",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 1195.4,
+  "max_workers": 20,
+  "total_cost_usd": 26.8781,
+  "total_prompt_tokens": 493002,
+  "total_completion_tokens": 813769,
+  "mean_latency_s": 182.09,
+  "median_latency_s": 188.45,
+  "max_latency_s": 349.71
+}

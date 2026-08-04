@@ -1,0 +1,13 @@
+{
+  "model": "moonshotai/kimi-k2.6",
+  "qa_tasks_total": 192,
+  "errors": 0,
+  "wall_clock_s": 1946.2,
+  "max_workers": 50,
+  "total_cost_usd": 2.6256,
+  "total_prompt_tokens": 597356,
+  "total_completion_tokens": 650839,
+  "mean_latency_s": 112.79,
+  "median_latency_s": 68.36,
+  "max_latency_s": 1812.67
+}

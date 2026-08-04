@@ -1,0 +1,13 @@
+{
+  "model": "anthropic/claude-opus-4.8",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": 93.0,
+  "max_workers": 35,
+  "total_cost_usd": 2.3317,
+  "total_prompt_tokens": 443393,
+  "total_completion_tokens": 4590,
+  "mean_latency_s": 23.83,
+  "median_latency_s": 16.77,
+  "max_latency_s": 85.22
+}
