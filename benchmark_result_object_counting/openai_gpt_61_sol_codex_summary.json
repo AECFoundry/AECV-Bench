@@ -1,0 +1,14 @@
+{
+  "model": "openai/gpt-6.1-sol (official AECV prompt, via Codex CLI)",
+  "folders_total": 120,
+  "folders_succeeded": 119,
+  "wall_clock_s": null,
+  "max_workers": 6,
+  "total_cost_usd": null,
+  "total_prompt_tokens": 2274144,
+  "total_completion_tokens": 109758,
+  "mean_latency_s": 44.86,
+  "median_latency_s": 40.59,
+  "max_latency_s": 125.36,
+  "notes": "This repo's object-counting prompt (intro + COUNTING_RULES) and PlanElements schema, unchanged. GPT-6.1 Sol, reasoning effort medium, via the Codex CLI (ChatGPT subscription backend), so no per-call USD cost. 5000_0025 failed on four attempts with a Codex tool-use error and is omitted. Run 2026-10-24."
+}

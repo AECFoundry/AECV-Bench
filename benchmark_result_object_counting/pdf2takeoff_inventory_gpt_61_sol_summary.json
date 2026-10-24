@@ -1,0 +1,14 @@
+{
+  "model": "pdf2takeoff inventory prompt + openai/gpt-6.1-sol",
+  "folders_total": 120,
+  "folders_succeeded": 120,
+  "wall_clock_s": null,
+  "max_workers": 6,
+  "total_cost_usd": null,
+  "total_prompt_tokens": 1813476,
+  "total_completion_tokens": 269122,
+  "mean_latency_s": 78.95,
+  "median_latency_s": 71.37,
+  "max_latency_s": 182.54,
+  "notes": "pdf2takeoff's itemised inventory prompt (https://github.com/ajflow/pdf2takeoff/blob/main/src/ai/inventory.ts): the model lists every door, window and space with a position, and returns per-field counts. Counts shown are the model's own counts, no post-hoc rules. GPT-6.1 Sol, reasoning effort medium, via the Codex CLI (ChatGPT subscription backend), so no per-call USD cost. First of four full runs (others: 56.8%, 57.8%, 58.5% at high effort). Run 2026-10-23."
+}
